@@ -1,0 +1,17 @@
+{ "name": "Donaide ",
+      "short_name": "Donaide",
+      "background_color": "#ffffff",
+      "theme_color": "#000000",
+      "description": "A picture of your favorite pupperino",
+      "icons": [{
+        "src": "images/Combo-logo.png",
+        "sizes": "1434x352",
+        "type": "image/png"
+      }, {
+        "src": "images/img-icon.png",
+        "sizes": "20x20",
+        "type": "image/png"
+      }],
+      "start_url": "/",
+      "display": "standalone"
+    }

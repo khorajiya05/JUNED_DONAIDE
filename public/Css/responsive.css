@@ -1,0 +1,1237 @@
+@media (max-width: 1440px) {
+    .header-toggle-cstm {
+      display: block;
+    }
+    .tmplt-footer p {
+        font-size: 16px;
+    }
+    .get-started-bg.custom_bg_homepage h3.get-started-prg {
+      font-size: 42px;
+    }
+    .get-started-bg.custom_bg_homepage p {
+      font-size: 16px;
+    }
+    #top-nav-header ul.get-started-links li a {
+      font-size: 16px;
+      font-weight: 500;
+    }
+    .btn-get-started {
+      font-size: 18px;
+    }
+    .icon-counter-single.icon-counter-center {
+      padding: 15px;
+    }
+    .modal-body-create-grp {
+      max-height: 500px;
+    }
+    .admin-group-page .adm-group-heading {
+      width: 100%;
+      height: auto;
+      padding: 10px !important;
+    }
+    .button-UI {
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .tmplt-btn {
+      padding: 8px 20px;
+      font-weight: 500;
+      font-size: 16px;
+      max-width: fit-content;
+      min-width: auto;
+      margin: 0;
+    }
+    .adm-group-slider .adm-group-slider-heading a {
+      font-size: 16px;
+    }
+    .margin-top {
+      margin-top: 15px;
+    }
+    .admin-tools-menu
+      .adm-tools-outer-box
+      .adm-tools-card
+      .adm-tools-card-inner
+      h5 {
+      font-size: 16px;
+      color: #fff;
+      min-height: auto;
+      margin: 0;
+    }
+    .community-title {
+      padding: 0;
+    }
+  
+    .community-title p {
+      margin: 0;
+      font-size: 18px;
+      color: #707070;
+      font-style: italic;
+      width: 100%;
+    }
+    .moda-dialogue-custom .create-event {
+      max-height: 500px !important;
+      overflow-x: hidden;
+      height: 100%;
+      overflow-y: auto;
+    }
+    .post {
+      font-size: 16px;
+    }
+    .event-card.card-group-col.custom-event .event-title h4 {
+      font-size: 18px;
+    }
+  }
+  
+  @media (max-width: 1200px) {
+    .inner-container-form {
+      max-width: 70%;
+    }
+  
+    .tmplt-about-us .owl-carousel .owl-item img {
+      height: 450px;
+    }
+    .icon-counter-content .counter {
+      font-size: 20px;
+    }
+    .custom-group-member ul.group-member-lists li {
+      width: 50%;
+      margin-bottom: 10px;
+    }
+  }
+  
+  @media (max-width: 992px) {
+    .bg_header_new_homepge {
+      height: 100%;
+      overflow: visible;
+    }
+    .dashboard-outer-container {
+      padding: 87px 20px;
+  }
+    .abt-text p {
+      font-size: 16px;
+      color: #707070;
+      font-weight: 300;
+      line-height: 27px;
+    }
+    .form-box {
+      padding: 30px;
+      margin-bottom: 25px;
+    }
+    /* Get Started */
+    .get-started-bg.custom_bg_homepage h3.get-started-prg {
+      font-size: 32px;
+    }
+    #progressbar li span {
+      display: none;
+    }
+    #top-nav-header ul.get-started-links li a {
+      font-size: 16px;
+      font-weight: 500;
+      white-space: nowrap;
+      padding: 10px 0px;
+    }
+    .get-started-bg.custom_bg_homepage p {
+      font-size: 16px;
+      text-overflow: ellipsis;
+      width: 100%;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 6;
+    }
+  
+    /* Get Started ends here */
+    .login-bg {
+      flex-direction: column;
+      justify-content: start;
+      gap: 50px;
+    }
+    .bg-main-login {
+      width: 100%;
+      height: 250px;
+      background-position: center;
+    }
+    .Login-form {
+      width: 100%;
+    }
+    .tmplt-footer {
+      width: 100%;
+    }
+    .inner-container-form {
+      max-width: 100%;
+      padding: 0 10px 0;
+    }
+    .button-toogle {
+      display: block;
+      background: #fff;
+      border: 1px solid #d1d1d1;
+      border-radius: 5px;
+      /* padding: 5px 13px; */
+      width: 40px;
+      height: 40px;
+      text-align: center;
+    }
+    .mar-nav-left-0 {
+      left: 0px !important;
+    }
+    .button-toogle i.fa.fa-bars {
+      font-size: 18px;
+    }
+  
+    .view-all-adm-group-cards .view-all-adm-group-container .owl-cstm-item {
+      width: initial;
+    }
+  
+    .left-sidebar {
+      left: -300px;
+    }
+    .dashboard-container.active .left-sidebar {
+      left: 0px;
+    }
+    .right-sidebar {
+      width: 100%;
+      margin-left: 0px;
+    }
+  
+    .get-started-bg.custom_bg_homepage h3.get-started-prg small {
+      display: block;
+      font-size: 22px;
+      width: auto;
+      max-width: 300px;
+      margin: 0 auto;
+      font-style: italic;
+      font-weight: 400;
+      padding: 5px;
+    }
+    .get-in-touch__img {
+      position: relative;
+      display: block;
+      margin-right: 0;
+      z-index: 5;
+      margin-bottom: 20px;
+    }
+    .get-in-touch__img img {
+      width: 100%;
+    }
+    .form-addess {
+      margin-bottom: 20px;
+    }
+    .section-title__title {
+      font-size: 32px;
+    }
+    .moda-dialogue-custom {
+      min-width: 100%;
+    }
+    .tmplt-footer p {
+      font-size: 12px;
+    }
+    .adm-group-slider .adm-group-slider-heading h3 {
+      font-size: 18px;
+      font-weight: bold;
+      color: #fff;
+    }
+    .admin-group-page .adm-group-heading h3 a i,
+    .admin-tools-menu-heading h3 a i {
+      width: 20px;
+      height: 20px;
+      font-size: 18px;
+    }
+    .rolespermission-inner-box table thead tr th {
+      padding: 16px;
+      white-space: nowrap;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .main-heading {
+      font-size: 22px;
+    }
+    .group-main-container {
+      padding: 30px 0px;
+    }
+    .heading-main p {
+      font-size: 18px;
+    }
+  
+    #progressbar li:before {
+      width: 50px;
+      height: 50px;
+    }
+  
+    #progressbar li:after {
+      top: 23px;
+    }
+  
+    .curve-up {
+      width: 100%;
+      min-height: 200px;
+      border-radius: 0 0 50% 50% / 0 0 100% 100%;
+    }
+  
+    .award-image img {
+      width: 140px;
+    }
+  
+    .congratulation-box {
+      margin-top: 110px;
+    }
+  
+    .community-url-field .cstm-url-field {
+      padding: 0 10px;
+      font-size: 14px;
+    }
+    .cstm-search {
+      margin-top: 10px;
+    }
+    .adm-header-nav li.adm-profile-drop ul {
+      position: absolute;
+    }
+    .adm-header-nav li.adm-notification ul {
+      position: absolute;
+    }
+    .all-sites-tmpt-header-search {
+      display: flex;
+      align-items: flex-start;
+      justify-content: initial;
+      flex-direction: column;
+    }
+  
+    .left-sidebar {
+      top: 68.84px;
+    }
+  
+    .left-sidebar .sidebar-inner {
+      height: calc(100vh - 68.84px);
+    }
+  
+    .setting-progress-box > img {
+      width: 120px;
+      margin: 30px 0 5px;
+    }
+  
+    .inner-container-template {
+      margin: 0px 0px 0px;
+    }
+  
+    .templateherobanner-bg .templateherobanner-bg-content {
+      width: 95%;
+    }
+  
+    .templateherobanner .templateherobanner-content {
+      width: 95%;
+    }
+  
+    .tmplt-about-us-heading {
+      width: 95%;
+    }
+  
+    #top-admin-header a.navbar-brand img {
+      width: 75px;
+    }
+  
+    #top-template-nav-header a.navbar-brand img {
+      width: 75px;
+    }
+  
+    .main-outer-container {
+      padding-top: 75px;
+    }
+  
+    .admin-group-page .adm-group-heading {
+      border-bottom: 1px solid #e1e1e1;
+      display: flex;
+      flex-direction: column;
+      padding: 0 20px;
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
+    .ReactModal__Content {
+      width: 98%;
+      max-width: 600px;
+    }
+  
+    .ReactModal__Content
+      .modal-body
+      .menu-title-edit-section
+      .upload-menu-button {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .ReactModal__Content
+      .modal-body
+      .menu-title-edit-section
+      .upload-menu-button
+      .upload-menu-button-add-list
+      input[type="text"] {
+      width: 100%;
+    }
+  
+    .ReactModal__Content
+      .modal-body
+      .menu-title-edit-section
+      .upload-menu-button
+      .upload-menu-button-add-list {
+      width: 100%;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .custom-group-member ul.group-member-lists li {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    .get-started-bg.custom_bg_homepage p {
+      font-size: 16px;
+      text-overflow: ellipsis;
+      width: 100%;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 5;
+    }
+    .theme-header-2 nav {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding: 10px !important;
+      align-items: center;
+    }
+  
+    .theme-header-2 ul {
+      margin: 10px 0 10px !important;
+    }
+    .skip-template-btn {
+      font-size: 16px;
+      padding: 8px 10px;
+    }
+  
+    .home-banner-image {
+      height: 321px;
+      background-size: cover;
+    }
+    .cstm-search .searchTerm {
+      width: 100%;
+    }
+    .cstm-search {
+      width: 100%;
+    }
+    .btn-get-started {
+      margin-bottom: 10px;
+    }
+  
+    .main-inner-container .get-started-prg {
+      font-size: 18px;
+      margin-top: 25px;
+      margin: 35px 10px 30px;
+    }
+  
+    .main-sub-heading {
+      font-size: 16px;
+      margin-bottom: 25px;
+    }
+  
+    .main-outer-container {
+      padding-top: 71px;
+    }
+  
+    .setting-progress-box h3 {
+      font-size: 18px;
+      margin: 20px 10px;
+    }
+  
+    .setting-progress-box > img {
+      width: 110px;
+      margin: 10px 0 5px;
+    }
+  
+    #progressbar {
+      margin: 0 auto 0;
+      width: 100%;
+    }
+  
+    #top-nav-header a.navbar-brand img {
+      width: 110px;
+    }
+  
+    .all-sites-template-container {
+      padding: 30px 0px 10px;
+    }
+    .all-sites-tmpt-header-search {
+      padding: 0 10px;
+    }
+    .sites-template-container-box > div {
+      padding: 0 0px;
+    }
+    .admin-group-page .adm-group-heading {
+      padding: 0 20px;
+    }
+  
+    #msform fieldset {
+      padding: 20px 10px 30px;
+    }
+  
+    .community-plan-accordion
+      .card
+      .card-header
+      .custom-control
+      .plan-card-header
+      .custom-control-label {
+      font-size: 28px;
+    }
+  
+    .community-plan-accordion
+      .card
+      .card-header
+      .custom-control
+      .plan-card-header
+      .custom-control-label
+      sup {
+      font-size: 16px;
+      top: -15px;
+    }
+  
+    .community-plan-accordion
+      .card
+      .card-header
+      .custom-control
+      .plan-card-header
+      .custom-control-label
+      span {
+      font-size: 16px;
+    }
+  
+    .plan-payment {
+      padding: 20px 10px 30px;
+      margin-top: 20px;
+    }
+  
+    .plan-payment-body {
+      max-height: calc(100vh - 200px);
+      overflow-y: auto;
+    }
+  
+    .view-all-adm-group-cards {
+      padding: 20px 0px 20px;
+    }
+  
+    .tmplt-about-us .carousel-container .owl-theme .owl-dots .owl-dot span {
+      width: 10px;
+      height: 10px;
+    }
+  
+    .tmplt-about-us .carousel-container .owl-carousel {
+      padding: 0 10px;
+    }
+  
+    .tmplt-about-us .owl-carousel .owl-stage-outer {
+      margin-bottom: 20px;
+      margin-top: 20px;
+    }
+  
+    .header-toggle-cstm {
+      margin-left: 10px;
+    }
+  
+    .tmplt-about-us .owl-carousel .owl-item img {
+      height: 304px;
+    }
+  
+    .setting-progress-box .system-gif img {
+      width: 120px;
+      margin: 30px 0 10px;
+    }
+  
+    .view-all-adm-group-cards .view-all-adm-group-container .owl-cstm-item {
+      width: 100%;
+    }
+  
+    .tmplt-about-us .carousel-container .owl-theme .owl-dots .owl-dot span {
+      margin: 5px 4px;
+    }
+  
+    .templateherobanner .templateherobanner-content {
+      padding: 40px 0;
+    }
+  
+    .templateherobanner-bg .templateherobanner-bg-content h4 {
+      font-size: 16px;
+      font-weight: 400;
+    }
+    .singp-link {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      left: 0;
+      position: static;
+      gap: 10px;
+    }
+    .templateherobanner-bg .templateherobanner-bg-content h3 {
+      font-size: 24px;
+    }
+  
+    .templateherobanner .templateherobanner-content h4 {
+      font-size: 16px;
+      font-weight: 400;
+    }
+  
+    .templateherobanner .templateherobanner-content h3 {
+      font-size: 24px;
+    }
+  
+    .tmplt-about-us .tmplt-about-us-heading h4 {
+      font-size: 16px;
+      font-weight: 400;
+    }
+  
+    .tmplt-about-us .tmplt-about-us-heading h3 {
+      font-size: 24px;
+    }
+  
+    .tmplt-community-group h3 {
+      font-size: 24px;
+    }
+  
+    .tmplt-about-us {
+      text-align: center;
+      padding: 40px 0;
+    }
+  
+    .view-all-adm-group-cards {
+      padding: 5px 0px 10px;
+    }
+  
+    .curve-up {
+      min-height: 160px;
+    }
+  
+    .like-cmnt-counting .cmnt-count {
+      margin-left: 13px;
+    }
+  
+    .like-cmnt-counting .share-post-card {
+      margin-left: 13px;
+    }
+  
+    .view-group-detail-members {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .view-group-detail-members .invite-remove-group-list-btn {
+      margin-top: 10px;
+    }
+    .view-group-detail-members
+      .invite-remove-group-list-btn
+      > a#post:nth-child(1) {
+      margin-left: 0px;
+    }
+    .view-group-detail-members
+      .invite-remove-group-list-btn
+      > a#post:nth-child(2) {
+      background-color: #ff2424;
+    }
+  
+    /* mobile-bottom-menu */
+  
+    .mobile-bottom-menu {
+      position: fixed;
+      display: flex;
+      padding: 30px 40px;
+      justify-content: space-between;
+      align-items: center;
+      /* justify-content: space-between; */
+      width: 100%;
+      /* margin: auto; */
+      left: 0;
+      bottom: 0;
+      right: 0;
+      height: 32px;
+      font-size: 28px;
+      /* background-image: radial-gradient(circle at 36px 6px,transparent 36px, #ffffff 37px); */
+      background-image: url(../Images/mobile-bottom-menu.jpg);
+      background-repeat: no-repeat;
+      background-size: cover;
+      filter: drop-shadow(0px -1px 6px rgba(0, 0, 0, 0.08))
+        drop-shadow(0px -2px 12px rgba(0, 0, 0, 0.12));
+      /* border-bottom-left-radius: 30px;
+      border-bottom-right-radius: 30px; */
+      transition: 0.3s ease-in-out;
+      z-index: 9;
+      /* background-color: red; */
+    }
+  
+    .mobile-menu-create-group {
+      width: 50px;
+      height: 50px;
+      border: 2px solid #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50px;
+      /* position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: -20px; */
+      background-color: #27447a;
+      font-size: 30px !important;
+    }
+    .mobile-bottom-menu i {
+      color: #fff;
+      font-size: 22px;
+      cursor: pointer;
+    }
+    /* .tmplt-footer {
+    margin-bottom: 60px;
+  } */
+  
+    .view-group-detail-members a.tmplt-btn {
+      margin-top: 10px;
+      margin-left: 0px;
+    }
+  
+    .modal-body-create-grp {
+      padding: 0 10px;
+  
+      height: calc(100vh - 230px);
+      overflow-y: scroll;
+    }
+  }
+  @media (max-height:600px){
+    .modal-body-create-grp {
+        max-height: 400px;
+    }
+  }
+  /*29/8/2022 css start here */
+  @media (max-width: 767px) {
+    .admin-tools-menu .adm-tools-outer-box .adm-tools-card {
+      width: 30%;
+    }
+    .dashboard-outer-container {
+      padding: 20px 20px;
+  }
+    .bg_header_new_homepge {
+      height: 100%;
+      overflow: visible;
+    }
+    .abt-text {
+      position: relative;
+      z-index: 999999;
+    }
+    .point h3 {
+      margin-bottom: 5px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .clr-lowwhite {
+      color: #838383;
+      white-space: nowrap;
+    }
+    a.forget-link {
+      text-decoration: none;
+      color: #838383;
+      white-space: nowrap;
+    }
+    main.get-started-bg .inner-container-form.mt-5 {
+      margin: 0 !important;
+    }
+    .bg-grey-wall {
+      padding: 0;
+      margin: 0;
+    }
+    .meadia-posts-create-cmnt {
+      padding: 0;
+      align-items: start;
+      justify-content: space-between;
+    }
+  
+    .meadia-posts-create-cmnt br {
+      display: none;
+    }
+  
+    .commenttextbox {
+      flex-direction: column;
+      align-items: end;
+      justify-content: center;
+      width: 100%;
+    }
+  
+    .meadia-posts-create-cmnt img {
+      margin: 0;
+    }
+  
+    .commenttextbox .react-emoji button.react-input-emoji--button {
+      position: absolute;
+      right: 0;
+      top: 8px;
+    }
+  
+    .commenttextbox .react-emoji .react-input-emoji--container {
+      margin: 0 0px 15px 10px;
+    }
+    .meadia-posts-card {
+      padding: 20px 15px;
+    }
+    .create-post-inner-box .create-post-text textarea {
+      min-height: 120px;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+    .like-cmnt-counting .counter {
+      margin: 3px !important;
+      font-size: 0;
+      padding: 8px 15px;
+    }
+    .like-cmnt-countingcustom .counter span {
+      margin-left: 0;
+      font-weight: 100;
+      font-size: 14px;
+    }
+    .group-tab-nav.custom-nav-tabs-main nav div#nav-tab button {
+      font-size: 16px;
+      padding: 10px 10px;
+    }
+    .post2,
+    .post {
+      font-size: 16px !important;
+    }
+    .create-post-outer-box {
+      padding: 20px 0px;
+    }
+    .media-posts-inner-box {
+      margin: 5px 0;
+      padding: 0 0px;
+    }
+    .create-post-outer-box .create-post-inner-box .create-post {
+      flex-direction: column;
+      gap: 15px;
+    }
+    .create-post-outer-box .create-post-inner-box .create-post label span {
+      font-size: 16px;
+    }
+  
+    .create-post-outer-box
+      .create-post-inner-box
+      .create-post
+      .create-post-icons-upld {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  
+    .create-post-outer-box
+      .create-post-inner-box
+      .create-post
+      .create-post-icons-upld
+      label {
+      padding: 15px 20px;
+      margin-right: 10px;
+      background: #f6f6f6;
+      width: 100%;
+      margin: 5px 0px;
+      border-radius: 15px;
+      text-align: center;
+    }
+    .inner-content-height {
+      min-height: calc(100vh - 200px);
+    }
+    .admin-group-page .adm-group-heading {
+      flex-direction: column;
+      gap: 10px;
+    }
+    .manage-width {
+      width: 100% !important;
+    }
+  
+    .manage-width img {
+      width: 100% !important;
+      height: auto !important;
+    }
+  
+    .button-UI {
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+      width: 100%;
+    }
+  
+    .table-custom table thead tr th,
+    .table-custom table tbody tr td {
+      white-space: nowrap;
+    }
+    .table-custom table tbody tr td button {
+      width: 100% !important;
+      display: block;
+      margin: 5px 0;
+    }
+  
+    .admin-group-page .adm-group-heading h3 a {
+      padding-bottom: 0;
+    }
+    .admin-group-page .adm-group-heading h3 {
+      align-items: center;
+    }
+    .heading-main p {
+      font-size: 18px;
+      margin: 0;
+    }
+    .site-template-card-publish {
+      display: block;
+      text-align: center;
+    }
+    .site-template-card-publish button.post {
+      margin: 10px 0;
+    }
+  }
+  
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .table-custom table tbody tr td button {
+      width: 100% !important;
+      display: block;
+      margin: 5px 0;
+    }
+    .custom-group-member ul.group-member-lists li {
+      width: 50%;
+      margin-bottom: 10px;
+    }
+    .comment-details {
+      max-width: 300px;
+    }
+    .admin-tools-menu .adm-tools-outer-box .adm-tools-card {
+      width: 30%;
+    }
+    .admin-group-page .adm-group-heading {
+      flex-direction: column;
+      gap: 10px;
+    }
+    .table-custom table thead tr th,
+    .table-custom table tbody tr td {
+      white-space: nowrap;
+    }
+  
+    .admin-group-page .adm-group-heading h3 a {
+      padding-bottom: 0;
+    }
+    .admin-group-page .adm-group-heading h3 {
+      align-items: center;
+    }
+    .heading-main p {
+      font-size: 18px;
+      margin: 0;
+    }
+  
+    .site-template-card-publish {
+      display: block;
+      text-align: center;
+    }
+    .site-template-card-publish button.post {
+      margin: 10px 0;
+    }
+  }
+  
+  @media (min-width: 1024px) and (max-width: 1366px) {
+    .table-custom table tbody tr td button {
+      width: 100% !important;
+      display: block;
+      margin: 5px 0;
+    }
+  
+    .table-custom table thead tr th,
+    .table-custom table tbody tr td {
+      white-space: nowrap;
+    }
+  
+    .admin-group-page .adm-group-heading h3 a {
+      padding-bottom: 0;
+    }
+    .admin-group-page .adm-group-heading h3 {
+      align-items: center;
+    }
+    .heading-main p {
+      font-size: 18px;
+      margin: 0;
+    }
+    .left-sidebar .sidebar-inner {
+      height: calc(100vh - 67px);
+    }
+  
+    .site-template-card-publish {
+      display: block;
+      text-align: center;
+    }
+    .site-template-card-publish button.post {
+      margin: 10px 0;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    #top-nav-header a.navbar-brand img {
+      width: 80px;
+    }
+    .group-detail-card-name {
+      position: absolute;
+      top: 36px;
+      margin: 0 10px;
+      right: 0;
+      left: 0;
+      z-index: 9;
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      flex-direction: column;
+      gap: 15px;
+    }
+  
+    .view-group-detail-about.cusom-group-design.bg-white {
+      justify-content: start;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .bg-grey-wall {
+      padding: 0;
+      margin: 0;
+    }
+    .view-group-detail-about.cusom-group-design.bg-white h3.grpname {
+      width: auto;
+    }
+  
+    .view-group-detail-about.cusom-group-design.bg-white
+      .view-group-detail-members
+      button.post2 {
+      margin-left: 0;
+    }
+    .group-tab-nav.custom-nav-tabs-main nav div#nav-tab {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      margin: 20px 0px 0px;
+    }
+  
+    .main-outer-container {
+      padding-top: 60px;
+    }
+  
+    .tmplt-footer.mb-0 p {
+      font-size: 12px;
+    }
+  
+    .admin-tools-menu .adm-tools-outer-box .adm-tools-card {
+      width: 45%;
+      max-width: 100%;
+      margin: 5px;
+    }
+    /* button  */
+  
+    .tmplt-btn {
+      padding: 8px 20px;
+      font-weight: 500;
+      font-size: 16px;
+      width: 100%;
+      max-width: 100%;
+    }
+  
+    .btn-get-started {
+      padding: 8px 20px;
+      margin-bottom: 30px;
+      font-size: 16px;
+    }
+  
+    .next-button {
+      padding: 8px 20px;
+      font-size: 16px;
+      min-width: 132px;
+    }
+  
+    .previous-button-border {
+      padding: 8px 20px;
+      font-size: 16px;
+      min-width: 132px;
+      margin-right: 10px;
+    }
+    .let-get-rock-btn {
+      padding: 8px 20px;
+      font-weight: 500;
+      font-size: 16px;
+      cursor: pointer;
+      min-width: initial;
+    }
+  
+    .template-header-edit-btn a.edit-template-btn {
+      font-size: 16px;
+      padding: 8px 20px;
+    }
+    .skip-template-btn {
+      font-size: 16px;
+      padding: 8px 20px;
+    }
+  
+    .main-inner-container .get-started-prg {
+      font-size: 15px;
+    }
+  
+    #progressbar li:before {
+      width: 45px;
+      height: 45px;
+    }
+  
+    #progressbar li:after {
+      top: 20px;
+    }
+  
+    .main-heading {
+      font-size: 18px;
+    }
+  
+    #msform fieldset {
+      border: 0 none;
+      padding: 20px 0 30px;
+      box-sizing: border-box;
+    }
+  
+    #msform {
+      margin-top: 20px;
+    }
+  
+    .setting-progress-box h3 {
+      font-size: 16px;
+      margin: 20px 10px 0;
+    }
+  
+    .setting-progress-box > img {
+      width: 80px;
+      margin: 0px 0 5px;
+    }
+  
+    .plan-payment {
+      /* padding: 20px 30px 30px; */
+      margin-top: 0px;
+    }
+  
+    .curve-up {
+      min-height: 126px;
+    }
+  
+    .award-image img {
+      width: 106px;
+    }
+  
+    .congratulation-box {
+      margin-top: 80px;
+    }
+  
+    .congratulation-box {
+      margin-top: 100px;
+    }
+  
+    .congratulation-box h3 {
+      font-size: 22px;
+    }
+  
+    .congratulation-box .cong-heading {
+      font-size: 24px;
+    }
+  
+    .congratulation-box p {
+      margin-bottom: 30px;
+      font-size: 16px;
+    }
+  
+    .community-plan-accordion .card .card-header .custom-control {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .plan-payment {
+      padding: 20px 0px 30px;
+    }
+  
+    .plan-payment-images img {
+      width: 45px;
+      margin: 0 8px;
+    }
+  
+    .plan-payment-body
+      .plan-payment-form
+      .field-set-form
+      .form-group
+      .field-expire-date
+      .divider {
+      margin: 0 10px;
+    }
+  
+    .plan-payment-body
+      .plan-payment-form
+      .field-set-form
+      .form-group
+      .field-expire-date {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+    }
+  
+    .adm-header-nav li.adm-header-search i {
+      font-size: 18px;
+    }
+  
+    .adm-header-nav li.adm-notification i {
+      font-size: 18px;
+    }
+  
+    .adm-header-nav li.adm-notification a.dropdown-toggle .adm-notif-bell-numb {
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      border-radius: 50px;
+      background-color: #ff2424;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 400;
+      top: 5px;
+      right: -4px;
+    }
+  
+    .admin-profile-pic img {
+      width: 30px;
+      height: 30px;
+      margin-right: 5px;
+    }
+  
+    .adm-profile-drop a .admin-profile-pic-name {
+      font-size: 16px;
+    }
+    .adm-header-nav li {
+      margin: 0 5px;
+    }
+  
+    .header-toggle-cstm i {
+      font-size: 20px;
+    }
+    .header-toggle-cstm {
+      margin-left: 5px;
+    }
+  
+    .view-group-detail-members ul li img {
+      width: 40px;
+      height: 40px;
+      border: 2px solid #40c1c5;
+      border-radius: 100px;
+      object-fit: cover;
+    }
+  
+    .setting-prgrs-website-container div div > h2 {
+      font-size: 32px;
+    }
+  
+    .notification-page-outer {
+      padding: 20px 10px 0;
+    }
+  
+    .all-sites-template-container {
+      height: 100%;
+    }
+  }
+  
+  /*29/8/2022 css end here */
+  

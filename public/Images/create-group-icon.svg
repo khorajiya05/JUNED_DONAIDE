@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="36.674" height="19.723" viewBox="0 0 36.674 19.723">
+  <g id="Group_687" data-name="Group 687" transform="translate(-10 2.574)">
+    <path id="Icon_material-group" data-name="Icon material-group" d="M19.874,14.849A3.675,3.675,0,1,0,16.2,11.175,3.659,3.659,0,0,0,19.874,14.849Zm-9.8,0A3.675,3.675,0,1,0,6.4,11.175,3.659,3.659,0,0,0,10.074,14.849Zm0,2.45C7.22,17.3,1.5,18.732,1.5,21.586v3.062H18.649V21.586C18.649,18.732,12.928,17.3,10.074,17.3Zm9.8,0c-.355,0-.759.024-1.188.061A5.169,5.169,0,0,1,21.1,21.586v3.062h7.349V21.586C28.448,18.732,22.728,17.3,19.874,17.3Z" transform="translate(8.5 -7.5)" fill="#fff"/>
+    <g id="Icon_feather-plus" data-name="Icon feather-plus" transform="translate(28.026 -9.074)">
+      <path id="Path_29016" data-name="Path 29016" d="M18,7.5V17.649" transform="translate(-5.426)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      <path id="Path_29017" data-name="Path 29017" d="M7.5,18H17.649" transform="translate(0 -5.426)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+    </g>
+  </g>
+</svg>
