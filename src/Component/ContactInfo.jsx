@@ -250,11 +250,13 @@ export default class AddContactInfo extends Component {
       !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.state.email)
     ) {
       errors["email"] = "Please enter valid email-id like(test@gmail.com)";
-    } else if (
-      afterDotStrLen > 1
-    ) {
-      errors["email"] = "Please enter valid email-id like(test@gmail.com)";
-    } else if (!this.validateEmail(this.state.email)) {
+    } 
+    // else if (
+    //   afterDotStrLen > 1
+    // ) {
+    //   errors["email"] = "Please enter valid email-id like(test@gmail.com)";
+    // }
+     else if (!this.validateEmail(this.state.email)) {
       errors["email"] = "This email is already used.";
     } else if (this.state.isprivacypolicy === false) {
       errors["privacypolicy"] = "Please check privacy & policy checkbox.";
@@ -739,7 +741,7 @@ export default class AddContactInfo extends Component {
                       {/* progressbar */}
                       <ul id="progressbar">
                         <li className="active"><span>1</span></li>
-                       
+
                         <li className={this.state.cssClass1}><span>2</span></li>
                         <li className={this.state.cssClass2}><span>3</span></li>
                         <li className={this.state.cssClass3}><span>4</span></li>
