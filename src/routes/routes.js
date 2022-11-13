@@ -34,10 +34,10 @@ export const publicRoutes = [
         path: "/login",
         element: lazy(() => import("../Component/Login"))
     },
-    {
-        path: `/${domain}`,
-        element: lazy(() => import("../Component/ViewTemaplate"))
-    },
+    // {
+    //     path: `/${domain}`,
+    //     element: lazy(() => import("../Component/ViewTemaplate"))
+    // },
     // {
     //     path: "*",
     //     element: lazy(() => import("../Component/CommonComponents/Error"))

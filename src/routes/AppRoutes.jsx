@@ -25,7 +25,7 @@ const AppRoutes = () => {
     loginData === null || loginData === undefined || loginData === ""
       ? false
       : true;
-      console.log('isAuth',isAuth)
+  console.log('isAuth', isAuth)
 
   return (
     <Suspense
@@ -38,8 +38,8 @@ const AppRoutes = () => {
       <Router>
         <Switch>
           {publicRoutes.map(({ element: Element, path, index }) => (
-            <Route path={path} key={index} element={<Element />} />
-            
+            <Route path={path} key={index} element={!isAuth ? <Element /> : <Navigate to="/admin-tools" />} />
+
           ))}
 
           {!isAuth ? (
@@ -47,8 +47,8 @@ const AppRoutes = () => {
           ) : (
             privateRoutes.map(({ element: Element, path, index }) => (
               <>
-              <Route path={path} key={index} element={<Element />} />
-              <Route path="/*" element={<Navigate to="/" />} />
+                <Route path={path} key={index} element={<Element />} />
+                <Route path="/*" element={<Navigate to="/" />} />
               </>
             ))
           )}
