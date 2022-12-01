@@ -1,59 +1,54 @@
-import {
-  Route,
-  Navigate,
-  BrowserRouter as Router,
-  Routes as Switch,
-} from "react-router-dom";
+import { Route, Navigate, Routes as Switch } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { useSelector } from "react-redux";
-import { privateRoutes, publicRoutes } from "./routes";
+import { masterAdminRoutes, privateRoutes, publicRoutes } from "./routes";
+import { SpinnerLoader } from "../Component/loader/SpinnerLoader";
 
-const AboutUS = lazy(() => import("../Component/AboutUS"));
-const ContactUS = lazy(() => import("../Component/ContactUS"));
 const JoinGroup = lazy(() => import("../Component/JoinGroup"));
-const GetStarted = lazy(() => import("../Component/GetStarted"));
-const Forgotpassword = lazy(() => import("../Component/ForgotPassword"));
-const Resetpassword = lazy(() => import("../Component/ResetPassword"));
-const AddContactInfo = lazy(() => import("../Component/ContactInfo"));
-const Login = lazy(() => import("../Component/Login"));
 const ViewTemplate = lazy(() => import("../Component/ViewTemaplate"));
-const Error = lazy(() => import("../Component/CommonComponents/Error"));
 
 const AppRoutes = () => {
+
   const loginData = useSelector((state) => state.auth?.loginData);
-  const isAuth =
-    loginData === null || loginData === undefined || loginData === ""
-      ? false
-      : true;
-  console.log('isAuth', isAuth)
+  const token = localStorage.getItem("token");
+  const isAuth = (loginData === null || loginData === undefined || loginData === "") || (token === "" || token === null || token === undefined) ? false : true;
 
   return (
     <Suspense
-      fallback={
-        <div className="spinner-container">
-          <div className="loading-spinner"></div>
-        </div>
-      }
+      fallback={<SpinnerLoader />}
     >
-      <Router>
-        <Switch>
-          {publicRoutes.map(({ element: Element, path, index }) => (
-            <Route path={path} key={index} element={!isAuth ? <Element /> : <Navigate to="/admin-tools" />} />
+      <Switch>
+        {/* common routes which can access when user is loged in or not */}
+        <Route path="/join-group" element=<JoinGroup /> />
+        <Route exact path="/:siteName.conation.io" element={<ViewTemplate />} />
 
-          ))}
+        {/* Public Routes (Before Login) */}
+        {publicRoutes.map(({ element: Element, path }, index) => (
+          <Route path={path} key={index + "a"} element={!isAuth ? <Element /> : (loginData?.IsMaster === "True" && String(loginData?.RoleID) === String(1) ? <Navigate to="/owner-admin-list" /> : <Navigate to="/admin-tools" />)} />
+        ))}
 
-          {!isAuth ? (
-            <Route path="/*" element={<Navigate to="/login" />} />
-          ) : (
-            privateRoutes.map(({ element: Element, path, index }) => (
+        {/* Private Routes after login */}
+        {isAuth && (
+          (loginData?.IsMaster === "True" && String(loginData?.RoleID) === String(1) ? (
+            masterAdminRoutes.map(({ element: Element, path }, index) => (
               <>
-                <Route path={path} key={index} element={<Element />} />
-                <Route path="/*" element={<Navigate to="/" />} />
+                <Route path={path} key={index + "b"} element={<Element />} />
+                {/* <Route path="/*" element={<Navigate to="/" />} /> */}
               </>
             ))
-          )}
-        </Switch>
-      </Router>
+          ) : (
+            privateRoutes.map(({ element: Element, path }, index) => (
+              <>
+                <Route path={path} key={index + "c"} element={<Element />} />
+                {/* <Route path="/*" element={<Navigate to="/" />} /> */}
+              </>
+            ))
+          ))
+        )}
+
+        {/* if any routes not match 404 not found page */}
+        <Route path="/*" element={<Navigate to="/" />} />
+      </Switch>
     </Suspense>
   );
 };

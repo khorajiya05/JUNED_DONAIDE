@@ -1,11 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { AdminHeader } from "../admin-header";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { AdminHeader } from "../admin-header";
+import { useSelector } from "react-redux";
+
 import SideBar from "../SideBar/index";
 import RoleAndPermissionService from "../../Services/RoleAndPermissionService";
 import UserServices from "../../Services/UserServices";
 import { IMAGE_BASE_URL } from "../../Config";
+
 const Role = () => {
+
+  const { UserID, RoleID } = useSelector((state) => state.auth?.loginData);
+
   const [Leftside, setLeftside] = useState(true);
   const [allRole, setAllRole] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
@@ -13,16 +19,15 @@ const Role = () => {
   function Data() {
     setLeftside(!Leftside);
   }
-  const roleID = localStorage.getItem("roleID");
-  const userID = localStorage.getItem("userID");
+
   let getAllRole = async () => {
     const res = await RoleAndPermissionService.getAllRole();
-    if(res.data){
+    if (res.data) {
       setAllRole(res.data);
-  }
+    }
   };
   const GetUserPermissionById = async () => {
-    const res = await UserServices.GetUserPermissionById(userID, roleID);
+    const res = await UserServices.GetUserPermissionById(UserID, RoleID);
     if (res.data !== null) {
       setAllUsers(res.data);
     }
@@ -38,7 +43,7 @@ const Role = () => {
   useEffect(() => {
     getAllRole();
     GetUserPermissionById();
-  },[]);
+  }, []);
   return (
     <>
       <main className="">
@@ -60,7 +65,7 @@ const Role = () => {
                     <div className="admin-tools-menu">
                       <div className="admin-tools-menu-heading">
                         <h3>
-                          {roleID != 1 && (
+                          {Number(UserID) !== Number(1) && (
                             <Link to="/admin-tools">
                               <i
                                 className="fa fa-long-arrow-left me-2"
@@ -73,7 +78,7 @@ const Role = () => {
                       </div>
                       <div className="rolespermission-inner-box">
                         <div className="table-responsive">
-                          <table class="table table-striped">
+                          <table className="table table-striped">
                             <thead>
                               <tr>
                                 <th> S. No. </th>
@@ -89,20 +94,18 @@ const Role = () => {
                               {allUsers &&
                                 allUsers.length > 0 &&
                                 allUsers.map((data, index) => (
-                                  <tr>
+                                  <tr key={index}>
                                     <td>{index + 1} </td>
-
                                     <td>
                                       <img
                                         className="commentprofile"
                                         src={
                                           data.profilepicture
-                                            ? `${
-                                                IMAGE_BASE_URL +
-                                                data.profilepicture
-                                              }`
+                                            ? `${IMAGE_BASE_URL +
+                                            data.profilepicture
+                                            }`
                                             : process.env.PUBLIC_URL +
-                                              "/Images/guest-user.jpg"
+                                            "/Images/guest-user.jpg"
                                         }
                                         alt=""
                                       />{" "}
@@ -116,10 +119,10 @@ const Role = () => {
                                       {data.roleID === 3
                                         ? "Community Admin"
                                         : data.roleID === 4
-                                        ? "Group Admin"
-                                        : data.roleID === 5
-                                        ? "Group Member"
-                                        : ""}{" "}
+                                          ? "Group Admin"
+                                          : data.roleID === 5
+                                            ? "Group Member"
+                                            : ""}{" "}
                                     </td>
                                     <td>
                                       <select

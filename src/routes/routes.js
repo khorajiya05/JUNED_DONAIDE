@@ -1,5 +1,4 @@
 import { lazy } from "react";
-let domain = window.location.href.split("/")[3]
 
 export const publicRoutes = [
     {
@@ -35,13 +34,24 @@ export const publicRoutes = [
         element: lazy(() => import("../Component/Login"))
     },
     // {
-    //     path: `/${domain}`,
-    //     element: lazy(() => import("../Component/ViewTemaplate"))
-    // },
-    // {
     //     path: "*",
     //     element: lazy(() => import("../Component/CommonComponents/Error"))
     // }
+]
+
+export const masterAdminRoutes = [
+    {
+        path: "/communities",
+        element: lazy(() => import("../Component/Template-Dashboard"))
+    },
+    {
+        path: "/owner-admin-list",
+        element: lazy(() => import("../Component/OwerAdminList"))
+    },
+    {
+        path: "/notification",
+        element: lazy(() => import("../Component/Notifications"))
+    }
 ]
 
 export const privateRoutes = [
@@ -106,12 +116,12 @@ export const privateRoutes = [
         element: lazy(() => import("../Component/Admin-Dashboard"))
     },
     {
-        path: "/communities",
-        element: lazy(() => import("../Component/Template-Dashboard"))
-    },
-    {
         path: "/upgrade-plan",
         element: lazy(() => import("../Component/UpgradePlan"))
+    },
+    {
+        path: "/communities",
+        element: lazy(() => import("../Component/Template-Dashboard"))
     },
     {
         path: "/create-community",
@@ -184,8 +194,8 @@ export const privateRoutes = [
         path: "/role",
         element: lazy(() => import("../Component/Admin/Role"))
     },
-    {
-        path: "/owner-admin-list",
-        element: lazy(() => import("../Component/OwerAdminList"))
-    }
+    // {
+    //     path: `/${domain}`,
+    //     element: lazy(() => import("../Component/ViewTemaplate"))
+    // }
 ]

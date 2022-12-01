@@ -55,8 +55,7 @@ let DefaultThirdSection = () => {
 
   const GetAllDefaultSectionsTemplate = async () => {
     const res = await CommunityService.getAllDefaultSectionsTemplate();
-
-    setDefaultThirdTemplateData(res.data[2].sectionContent);
+    setDefaultThirdTemplateData(res?.data[2]?.sectionContent);
   };
 
   useEffect(() => {
@@ -101,24 +100,24 @@ let DefaultThirdSection = () => {
         <div className="view-all-adm-group-cards border-bottom-0">
           <div className="view-all-adm-group-container justify-content-center">
             {userGroup.length > 0 ? (
-              userGroup.map((option) => (
+              userGroup.map((option, index) => (
                 <>
                   <div
                     className="owl-cstm-item joinGroup joinGroup2"
-                    key={option}
+                    key={index}
                   >
                     {checkValidDomain(window.location.href.split("/")[3]) ||
-                    pathname === "/preview" ? (
+                      pathname === "/preview" ? (
                       ""
                     ) : (""
-                    //   <button
-                    //     type="button"
-                    //     className="joinBtn joinbtn2 "
-                    //     onClick={() => openGroupModal(option.groupID)}
-                    //     style={{ cursor: "pointer" }}
-                    //   >
-                    //     Join Group
-                    //   </button>
+                      //   <button
+                      //     type="button"
+                      //     className="joinBtn joinbtn2 "
+                      //     onClick={() => openGroupModal(option.groupID)}
+                      //     style={{ cursor: "pointer" }}
+                      //   >
+                      //     Join Group
+                      //   </button>
                     )}
                     <Link to="/admin-group-detail" className="item">
                       <img

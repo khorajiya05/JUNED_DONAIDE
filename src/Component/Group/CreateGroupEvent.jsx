@@ -1,19 +1,16 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import Modal from "react-modal";
-import moment from "moment";
-import DatePicker from "react-datepicker";
+
 import "react-datepicker/dist/react-datepicker.css";
 import GroupService from "../../Services/GroupService";
 import { useFormik } from "formik";
 import { useLocation } from "react-router";
-import {
-  NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
+import { NotificationContainer, NotificationManager } from "react-notifications";
 import "react-notifications/lib/notifications.css";
 import { renderComponent } from "../../ReduxStore/Actions/renderComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { addAmPMInTime } from "../Helper/checkValidDomain";
+import { IMAGE_BASE_URL } from "../../Config";
 
 const customStyles = {
   content: {
@@ -31,6 +28,9 @@ const customStyles = {
   },
 };
 const CreateGroupEvent = (props) => {
+
+  let dispatch = useDispatch();
+
   const {
     modalIsOpen,
     OpenModal,
@@ -41,11 +41,14 @@ const CreateGroupEvent = (props) => {
     event,
     setIsOpen
   } = props;
-  const [coverImage, setCoverImage] = useState(null);
+  const { profilePicture, firstName, profileId } = useSelector((state) => state?.profileData?.profileData);
 
-  const [selectedImg, setSelectedImg] = useState(null);
-  let dispatch = useDispatch();
+
   let { renderCompReducer } = useSelector((state) => state);
+
+  const [coverImage, setCoverImage] = useState(null);
+  const [selectedImg, setSelectedImg] = useState(null);
+
 
   const search = useLocation().search;
   const getGroupID = new URLSearchParams(search).get("groupID");
@@ -59,7 +62,7 @@ const CreateGroupEvent = (props) => {
     }
   };
   const changeHandlerImage = (event) => {
-    formik.setFieldValue("CoverImage",event.target.files[0])
+    formik.setFieldValue("CoverImage", event.target.files[0])
 
     let files = event.target.files;
     let reader = new FileReader();
@@ -91,17 +94,13 @@ const CreateGroupEvent = (props) => {
         values.startTime = `${values.startTime} ${getStartTimeAmPm}`;
         values.endTime = `${values.endTime} ${getEndTimeAmPm}`;
         values.groupID = getGroupID ? getGroupID : `${values.groupID}`;
-        values.userID = localStorage.getItem("userID");
+        values.userID = profileId;
         values.siteID = siteID;
         values.address = `${values.address}`;
-
-       
-
-
         const config = {
           headers: { "content-type": "multipart/form-data" },
         };
-        
+
 
         const res = await GroupService.addEventDetails(values, config);
 
@@ -154,43 +153,39 @@ const CreateGroupEvent = (props) => {
         isOpen={modalIsOpen}
         onAfterOpen={OpenModal}
         contentLabel="Example Modal"
+        backdrop="static"
         onRequestClose={closeModal}
       >
         <div className="moda-dialogue-custom">
-        <div className="modal-header">
-          <h5 className="mb-0">Create Events</h5>
-
-          <button className="modal-close-btn" onClick={closeModal}>
-            <i className="fa fa-times" aria-hidden="true"></i>
-          </button>
-        </div>
-
-        <div class="modal-body-create-grp create-event">
-          <div class="group-user mt-4">
-            <img
-              src={
-                localStorage.getItem("userImg") !== null||localStorage.getItem("userImg") !== ""
-                  ? localStorage.getItem("userImg")
-                  : process.env.PUBLIC_URL + " /Images/guest-user.jpg "
-              }
-              alt="banner"
-              className="commentprofile  "
-            />
-            <div class="username">
-              <h3>{localStorage.getItem("userName")}</h3>
-              <p>Host Your Profile</p>
-            </div>
-          </div>
           <form onSubmit={formik.handleSubmit}>
-            <div class="create-event-from mt-4">
-              <div class="row">
-                <div className="col-md-12 mb-3">
-                  <div className="modal-create-group-upld-img mb-3">
-                    <div className="create-group-upld-img">
-                      <label>
-                        {coverImage === null
-                          ? ""
-                          : coverImage !== null && (
+            <div className="modal-header">
+              <h5 className="mb-0">Create Events</h5>
+
+              <button className="modal-close-btn" onClick={closeModal}>
+                <i className="fa fa-times" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div className="modal-body-create-grp modal-bodycstm1">
+              <div className="group-user mt-4">
+                <img
+                  src={profilePicture ? (IMAGE_BASE_URL + profilePicture) : process.env.PUBLIC_URL + " /Images/guest-user.jpg "}
+                  alt="banner"
+                  className="commentprofile  "
+                />
+                <div className="username">
+                  <h3>{firstName || ""}</h3>
+                  <p>Host Your Profile</p>
+                </div>
+              </div>
+              <div className="create-event-from mt-4">
+                <div className="row">
+                  <div className="col-md-12 mb-3">
+                    <div className="modal-create-group-upld-img mb-3">
+                      <div className="create-group-upld-img">
+                        <label>
+                          {coverImage === null
+                            ? ""
+                            : coverImage !== null && (
                               <div className="">
                                 <img
                                   alt="not fount"
@@ -201,161 +196,161 @@ const CreateGroupEvent = (props) => {
                                 {/* {selectedImg} */}
                               </div>
                             )}
-                        <input
-                          type="file"
-                          name="myImage"
-                          value={formik.values.myImage}
-                          onChange={(event) => {
-                            changeHandlerImage(event);
-                          }}
-                        />
-                      </label>
+                          <input
+                            type="file"
+                            name="myImage"
+                            accept="image/*"
+                            value={formik.values.myImage}
+                            onChange={(event) => {
+                              changeHandlerImage(event);
+                            }}
+                          />
+                        </label>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="col-md-12 mb-3">
-                
-                  {isAdminSide && (<>
+                  <div className="col-md-12 mb-3">
+
+                    {isAdminSide && (<>
                       <label className="form-label">Groups</label>
-                    <select
-                      name="groupID"
-                      value={formik.values.groupID}
-                      onChange={formik.handleChange}
-                      className="create-community"
-                    >
-                      <option value="default">Select Group</option>
-                      {event && event.length > 0
-                        ? event.map(
+                      <select
+                        name="groupID"
+                        value={formik.values.groupID}
+                        onChange={formik.handleChange}
+                        className="create-community"
+                      >
+                        <option value="default">Select Group</option>
+                        {event && event.length > 0
+                          ? event.map(
                             (item) =>
                               item.groupList &&
                               item.groupList.length > 0 &&
-                              item.groupList.map((data) => (
-                                <option value={data.groupID}>
+                              item.groupList.map((data, index) => (
+                                <option value={data.groupID} key={index}>
                                   {data.groupName}
                                 </option>
                               ))
                           )
-                        : "Loding..."}
-                    </select></>
-                  )}
-                </div>
-                <div class="col-md-12 mb-3">
-                  <label className="form-label">Event Name</label>
-                  <input
-                    type="text"
-                    name="eventName"
-                    value={formik.values.eventName}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    class="form-control"
-                    placeholder="Enter event name"
-                  />
-                  {formik.touched.eventName && formik.errors.eventName ? (
-                    <div style={customStyles.errorStyle}>
-                      {formik.errors.eventName}
-                    </div>
-                  ) : null}
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Start date</label>
-                  <input
-                    type="date"
-                    name="startDate"
-                    min={new Date().toISOString().split("T")[0]}
-                    value={formik.values.startDate}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    class="form-control"
-                  />
-                  {formik.touched.startDate && formik.errors.startDate ? (
-                    <div style={customStyles.errorStyle}>
-                      {formik.errors.startDate}
-                    </div>
-                  ) : null}
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Start Time</label>
-                  <input
-                    class="form-control"
-                    type="time"
-                    name="startTime"
-                    value={formik.values.startTime}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    minTime={"7:00am"}
-                  />
-                  {formik.touched.startTime && formik.errors.startTime ? (
-                    <div style={customStyles.errorStyle}>
-                      {formik.errors.startTime}
-                    </div>
-                  ) : null}
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">End date</label>
-                  <input
-                    type="date"
-                    name="endDate"
-                    disabled={formik.values.startDate === "" ? true : false}
-                    min={
-                      formik.values.startDate
-                        ? new Date(formik.values.startDate)
+                          : "Loding..."}
+                      </select></>
+                    )}
+                  </div>
+                  <div className="col-md-12 mb-3">
+                    <label className="form-label">Event Name</label>
+                    <input
+                      type="text"
+                      name="eventName"
+                      value={formik.values.eventName}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      className="form-control"
+                      placeholder="Enter event name"
+                    />
+                    {formik.touched.eventName && formik.errors.eventName ? (
+                      <div style={customStyles.errorStyle}>
+                        {formik.errors.eventName}
+                      </div>
+                    ) : null}
+                  </div>
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">Start date</label>
+                    <input
+                      type="date"
+                      name="startDate"
+                      min={new Date().toISOString().split("T")[0]}
+                      value={formik.values.startDate}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      className="form-control"
+                    />
+                    {formik.touched.startDate && formik.errors.startDate ? (
+                      <div style={customStyles.errorStyle}>
+                        {formik.errors.startDate}
+                      </div>
+                    ) : null}
+                  </div>
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">Start Time</label>
+                    <input
+                      className="form-control"
+                      type="time"
+                      name="startTime"
+                      value={formik.values.startTime}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      minTime={"7:00am"}
+                    />
+                    {formik.touched.startTime && formik.errors.startTime ? (
+                      <div style={customStyles.errorStyle}>
+                        {formik.errors.startTime}
+                      </div>
+                    ) : null}
+                  </div>
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">End date</label>
+                    <input
+                      type="date"
+                      name="endDate"
+                      disabled={formik.values.startDate === "" ? true : false}
+                      min={
+                        formik.values.startDate
+                          ? new Date(formik.values.startDate)
                             .toISOString()
                             .split("T")[0]
-                        : ""
-                    }
-                    // onChange={handleChange}
-                    value={formik.values.endDate}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    class="form-control"
-                  />
-                  {formik.touched.endDate && formik.errors.endDate ? (
-                    <div style={customStyles.errorStyle}>
-                      {formik.errors.endDate}
-                    </div>
-                  ) : null}
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">End Time</label>
-                  <input
-                    class="form-control"
-                    type="time"
-                    name="endTime"
-                    value={formik.values.endTime}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    disabled={formik.values.startDate === "" ? true : false}
-                    minTime={new Date().toISOString().split("T")[1]}
-                  />
-                  {formik.touched.endTime && formik.errors.endTime ? (
-                    <div style={customStyles.errorStyle}>
-                      {formik.errors.endTime}
-                    </div>
-                  ) : null}
-                </div>
-                <div class="col-md-12 mb-3">
-                  <input
-                    type="textarea"
-                    name="address"
-                    value={formik.values.address}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    class="form-control"
-                    placeholder="Enter event address"
-                  />
-                  {formik.touched.address && formik.errors.address ? (
-                    <div style={customStyles.errorStyle}>
-                      {formik.errors.address}
-                    </div>
-                  ) : null}
+                          : ""
+                      }
+                      // onChange={handleChange}
+                      value={formik.values.endDate}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      className="form-control"
+                    />
+                    {formik.touched.endDate && formik.errors.endDate ? (
+                      <div style={customStyles.errorStyle}>
+                        {formik.errors.endDate}
+                      </div>
+                    ) : null}
+                  </div>
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">End Time</label>
+                    <input
+                      className="form-control"
+                      type="time"
+                      name="endTime"
+                      value={formik.values.endTime}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      disabled={formik.values.startDate === "" ? true : false}
+                      minTime={new Date().toISOString().split("T")[1]}
+                    />
+                    {formik.touched.endTime && formik.errors.endTime ? (
+                      <div style={customStyles.errorStyle}>
+                        {formik.errors.endTime}
+                      </div>
+                    ) : null}
+                  </div>
+                  <div className="col-md-12 mb-3">
+                    <input
+                      type="textarea"
+                      name="address"
+                      value={formik.values.address}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      className="form-control"
+                      placeholder="Enter event address"
+                    />
+                    {formik.touched.address && formik.errors.address ? (
+                      <div style={customStyles.errorStyle}>
+                        {formik.errors.address}
+                      </div>
+                    ) : null}
+                  </div>
                 </div>
               </div>
+
             </div>
-           
-          </form>
-        </div>
-        <div className="modal-footer">
+            <div className="modal-footer">
               <button
                 type="button"
                 onClick={closeModal}
@@ -366,11 +361,12 @@ const CreateGroupEvent = (props) => {
               <button
                 type="submit"
                 className="save-button"
-                // onClick={GroupFormValidation}
+              // onClick={GroupFormValidation}
               >
                 Save
               </button>
             </div>
+          </form>
         </div>
       </Modal>
       <NotificationContainer />

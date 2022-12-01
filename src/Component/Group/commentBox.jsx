@@ -1,36 +1,31 @@
-import React, { useState } from "react";
-
 import InputEmoji from 'react-input-emoji'
-import {IMAGE_BASE_URL} from '../../Config'
+import { useSelector } from 'react-redux';
+import { IMAGE_BASE_URL } from '../../Config'
 
 const CommentBox = (props) => {
 
   const { comment, setComment, handlePost, item, buttonContent } = props;
-
+  const { profilePicture } = useSelector((state) => state.profileData?.profileData);
 
   return (
     <div>
       <div className="meadia-posts-create-cmnt">
         <img
           className="commentprofile2 commentprofile"
-          src={
-            localStorage.getItem("userImg") == "null" ||
-            localStorage.getItem("userImg") == undefined||localStorage.getItem("userImg") == "" 
-              ? process.env.PUBLIC_URL + "/Images/guest-user.jpg"
-              : `${IMAGE_BASE_URL+localStorage.getItem("userImg")}`
+          src={profilePicture == "null" || profilePicture == undefined || profilePicture == ""
+            ? process.env.PUBLIC_URL + "/Images/guest-user.jpg"
+            : `${IMAGE_BASE_URL + profilePicture}`
           }
           alt="img"
         />
 
         <div className="commenttextbox">
-         
           <InputEmoji
-          value={comment}
-          onChange={setComment}
-          cleanOnEnter
-          placeholder="Type a message"
-        />
-
+            value={comment}
+            onChange={setComment}
+            cleanOnEnter
+            placeholder="Type a message"
+          />
           {/* <Emoji/> */}
           <button
             className="post"

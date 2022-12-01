@@ -109,14 +109,14 @@ const CommunitySetting = () => {
                   <div className="inner-content-height">
                     <div className="admin-tools-menu">
                       <div className="admin-tools-menu-heading">
-                        <h3>   {roleID!=1&& <Link to="/admin-tools">
-                            
-                              <i
-                                className="fa fa-long-arrow-left me-2"
-                                aria-hidden="true"
-                              ></i>
-                          
-                          </Link>}Community Setting</h3>
+                        <h3>   {roleID != 1 && <Link to="/admin-tools">
+
+                          <i
+                            className="fa fa-long-arrow-left me-2"
+                            aria-hidden="true"
+                          ></i>
+
+                        </Link>}Community Setting</h3>
                       </div>
 
                       <div className="rolespermission-inner-box mb-4">
@@ -135,7 +135,7 @@ const CommunitySetting = () => {
                                 </option>
                               ) : (
                                 <>
-                                  {userCommunity &&userCommunity.length>0&&
+                                  {userCommunity && userCommunity.length > 0 &&
                                     userCommunity.map((data) => (
                                       <option
                                         key={data.communityId}
@@ -192,16 +192,15 @@ const CommunitySetting = () => {
                             </thead>
 
                             <tbody>
-                              {userGroupMembers&&userGroupMembers.length > 0 ? (
+                              {userGroupMembers && userGroupMembers.length > 0 ? (
                                 userGroupMembers.map((item, index) => (
-                                  <tr>
-                                    {" "}
+                                  <tr key={index}>
                                     <td>{index + 1}</td>
                                     <td>{item.firstName}</td>
                                     <td>{item.lastName}</td>
                                     <td>{item.email}</td>
                                     {/* <td>{item.phone}</td> */}
-                                    
+
                                     <td
                                       style={{
                                         fontWeight: "bold",
@@ -261,8 +260,8 @@ const CommunitySetting = () => {
                             </tbody>
                           </table>
                         </div>
-                       
-                        
+
+
                       </div>
                     </div>
                   </div>

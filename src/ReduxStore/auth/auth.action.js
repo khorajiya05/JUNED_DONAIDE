@@ -1,4 +1,4 @@
-import { AUTH_LOADING, AUTH_LOADED, LOGIN_SUCCESS, LOGOUT, FORGOT_PASSWORD, RESET_FORGOT_PASSWORD, CHANGE_PASSWORD } from "./auth.constant"
+import { AUTH_LOADING, AUTH_LOADED, LOGIN_SUCCESS, LOGOUT, CHANGE_LOGED_USER_ROLE, CHANGE_ROLE_LOADED, CHANGE_ROLE_LOADING } from "./auth.constant"
 
 /**
  * auth pending action creator
@@ -17,8 +17,7 @@ const authLoaded = () => ({ type: AUTH_LOADED });
  * @param token
  * @returns
  */
-const loginSuccess = (loginData) =>
-  ({ type: LOGIN_SUCCESS, payload: loginData });
+const loginSuccess = (loginData) => ({ type: LOGIN_SUCCESS, payload: loginData });
 
 /**
  * auth logout action creator
@@ -27,29 +26,28 @@ const loginSuccess = (loginData) =>
 const logout = () => ({ type: LOGOUT });
 
 /**
- * auth forgot password action creator
- * @returns
+ * change role lodaing action creator
+ * @returns 
  */
-const forgotPassword = () => ({ type: FORGOT_PASSWORD });
+const changeRoleLoadingAction = () => ({ type: CHANGE_ROLE_LOADING })
 
 /**
- * auth reset forgot password action creator
- * @returns
+ * change role loaded action creator
+ * @returns 
  */
-const resetForgotPasswordSuccess = () => ({ type: RESET_FORGOT_PASSWORD });
+const changeRoleLoadedAction = () => ({ type: CHANGE_ROLE_LOADED })
 
 /**
- * auth change password action creator
- * @returns
+ * change role of logged user  actoin creator
  */
-const changePassword = () => ({ type: CHANGE_PASSWORD });
+const changeRoleOfLoggedUserAction = (selectedRoleId) => ({ type: CHANGE_LOGED_USER_ROLE, payload: selectedRoleId });
 
 export {
   authLoading,
   authLoaded,
   loginSuccess,
   logout,
-  forgotPassword,
-  resetForgotPasswordSuccess,
-  changePassword,
+  changeRoleLoadingAction,
+  changeRoleLoadedAction,
+  changeRoleOfLoggedUserAction,
 };

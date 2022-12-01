@@ -1,32 +1,35 @@
-import React, { useEffect, useState } from "react";
-
-import { Link } from "react-router-dom";
-import CommunityService from "../Services/CommunityService";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+
+import CommunityService from "../Services/CommunityService";
 import { renderComponent } from "../ReduxStore/Actions/renderComponent";
+
 export const Settingprogress = () => {
+
+  let dispatch = useDispatch();
+  const location = useLocation();
+
+  let { renderCompReducer } = useSelector((state) => state);
+
+  const { search } = location;
+  const getSiteID = new URLSearchParams(search).get("id");
+  let siteID = localStorage.getItem("siteIDs");
+
+  // let siteIDs = localStorage.getItem("siteIDs");
+  // let paramsSiteID = localStorage.getItem("paramsSiteID");
+  let ID = getSiteID == null ? siteID : getSiteID;
+
   const [loading, setLoad] = useState(true);
   const [loadingDomain, setLoadDomain] = useState(false);
-  const [userCommunity, setUserCommunity] = useState([]);
   const [userDomai, setUserDomai] = useState({});
   const [sideDomain, setSideDomain] = useState(null);
 
-
-  let dispatch = useDispatch();
-  let { renderCompReducer } = useSelector((state) => state);
-  let siteIDs = localStorage.getItem("siteIDs");
-  let paramsSiteID = localStorage.getItem("paramsSiteID");
-
-  let ID = paramsSiteID == null ? siteIDs : paramsSiteID;
-
-
   let getCommuniSiteDetailsBySiteID = async () => {
     setLoadDomain(true)
-    const getPublicSideUrl =
-      await CommunityService.getCommunitySiteDetailsBySiteID(ID);
-
+    const getPublicSideUrl = await CommunityService.getCommunitySiteDetailsBySiteID(ID);
     if (getPublicSideUrl.status === 200) {
-      setSideDomain(getPublicSideUrl.data.communitySite[0]?.communityDomain);
+      setSideDomain((getPublicSideUrl.data?.communitySite || [])[0]?.communityDomain);
     }
     setLoadDomain(false)
   };
@@ -35,11 +38,8 @@ export const Settingprogress = () => {
     setTimeout(() => {
       setLoad(false);
     }, 4000);
-
     getCommuniSiteDetailsBySiteID();
   }, []);
-
-
 
   return (
     <div>
@@ -84,7 +84,7 @@ export const Settingprogress = () => {
                         type="text"
                         className="url-preview form-control cstm-field"
                         // value={`https://donaide-evmt-web.chetu.com/${sideDomain}`}
-                        value={`https://conation.io/${sideDomain}`}
+                        value={`https://donaide-evmt-stage-web.azurewebsites.net/${sideDomain}`}
                       />
                       <div
                         className="URL-setting-btns"
@@ -94,19 +94,18 @@ export const Settingprogress = () => {
                           );
                         }}
                       >
-                        {loadingDomain?<div className="spinner-container">
+                        {loadingDomain ? <div className="spinner-container">
                           <div className="loading-spinner"></div>
-                        </div>:<a
+                        </div> : <Link
                           className="btn next next-button"
-                          // href={`https://donaide-evmt-web.chetu.com/${sideDomain}`}
-                          href={`https://conation.io/${sideDomain}`}
+                          to={`/${sideDomain}`}
                           target="_blank"
                           rel="noreferrer"
-                          
+
                         >
                           Visit Now
-                        </a>}
-                        
+                        </Link>}
+
 
                         <Link
                           to="/communities"
@@ -125,7 +124,7 @@ export const Settingprogress = () => {
           </>
         )}
       </main>
-    </div>
+    </div >
   );
 };
 

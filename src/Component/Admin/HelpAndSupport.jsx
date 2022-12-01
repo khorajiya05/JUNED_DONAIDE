@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import { AdminHeader } from "../admin-header";
 import { Link } from "react-router-dom";
 import SideBar from "../SideBar/index";
+import { useSelector } from "react-redux";
 
 const HelpAndSupport = () => {
+
+  const { UserID, RoleID } = useSelector((state) => state.auth?.loginData);
+
   const [Leftside, setLeftside] = useState(true);
-  const roleID = localStorage.getItem("roleID");
+  // const roleID = localStorage.getItem("roleID");
   function Data() {
     setLeftside(!Leftside);
   }
@@ -31,23 +35,23 @@ const HelpAndSupport = () => {
                     <div className="admin-tools-menu ">
                       <div className="admin-tools-menu-heading">
                         <h3>
-                        {roleID!=1&&
-                          <Link to="/admin-tools">
-                            <i
-                              className="fa fa-long-arrow-left me-2"
-                              aria-hidden="true"
-                            ></i>
-                          </Link>}
+                          {RoleID != 1 &&
+                            <Link to="/admin-tools">
+                              <i
+                                className="fa fa-long-arrow-left me-2"
+                                aria-hidden="true"
+                              ></i>
+                            </Link>}
                           Help and Support
                         </h3>
                       </div>
 
                       <div className="rolespermission-inner-box mb-4">
-                        <div class="accordion" id="accordionExample">
-                          <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingOne">
+                        <div className="accordion" id="accordionExample">
+                          <div className="accordion-item">
+                            <h2 className="accordion-header" id="headingOne">
                               <button
-                                class="accordion-button"
+                                className="accordion-button"
                                 type="button"
                                 data-bs-toggle="collapse"
                                 data-bs-target="#collapseOne"
@@ -59,11 +63,11 @@ const HelpAndSupport = () => {
                             </h2>
                             <div
                               id="collapseOne"
-                              class="accordion-collapse collapse show"
+                              className="accordion-collapse collapse show"
                               aria-labelledby="headingOne"
                               data-bs-parent="#accordionExample"
                             >
-                              <div class="accordion-body">
+                              <div className="accordion-body">
                                 <strong>
                                   This is the first item's accordion body.
                                 </strong>{" "}
@@ -80,10 +84,10 @@ const HelpAndSupport = () => {
                               </div>
                             </div>
                           </div>
-                          <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingTwo">
+                          <div className="accordion-item">
+                            <h2 className="accordion-header" id="headingTwo">
                               <button
-                                class="accordion-button collapsed"
+                                className="accordion-button collapsed"
                                 type="button"
                                 data-bs-toggle="collapse"
                                 data-bs-target="#collapseTwo"
@@ -95,11 +99,11 @@ const HelpAndSupport = () => {
                             </h2>
                             <div
                               id="collapseTwo"
-                              class="accordion-collapse collapse"
+                              className="accordion-collapse collapse"
                               aria-labelledby="headingTwo"
                               data-bs-parent="#accordionExample"
                             >
-                              <div class="accordion-body">
+                              <div className="accordion-body">
                                 <strong>
                                   This is the second item's accordion body.
                                 </strong>{" "}
@@ -116,10 +120,10 @@ const HelpAndSupport = () => {
                               </div>
                             </div>
                           </div>
-                          <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingThree">
+                          <div className="accordion-item">
+                            <h2 className="accordion-header" id="headingThree">
                               <button
-                                class="accordion-button collapsed"
+                                className="accordion-button collapsed"
                                 type="button"
                                 data-bs-toggle="collapse"
                                 data-bs-target="#collapseThree"
@@ -131,11 +135,11 @@ const HelpAndSupport = () => {
                             </h2>
                             <div
                               id="collapseThree"
-                              class="accordion-collapse collapse"
+                              className="accordion-collapse collapse"
                               aria-labelledby="headingThree"
                               data-bs-parent="#accordionExample"
                             >
-                              <div class="accordion-body">
+                              <div className="accordion-body">
                                 <strong>
                                   This is the third item's accordion body.
                                 </strong>{" "}

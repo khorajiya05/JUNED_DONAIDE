@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { AdminHeader } from "../admin-header";
 import SideBar from "../SideBar/index";
 import CommunityService from "../../Services/CommunityService";
@@ -10,8 +10,12 @@ import { Link } from "react-router-dom";
 import { IMAGE_BASE_URL } from "../../Config";
 
 const MemberView = () => {
+
   let dispatch = useDispatch();
+
+  const { RoleID, UserID } = useSelector((state) => state?.auth?.loginData);
   let { modalReducer } = useSelector((state) => state);
+
   const [Leftside, setLeftside] = useState(true);
   const [userCommunity, setUserCommunity] = useState([]);
   const [selectedCommunity, setSelectedCommunity] = useState("");
@@ -21,33 +25,31 @@ const MemberView = () => {
   const [loader, setIsLoader] = useState(false);
   const [isComLoaded, setIsComLoaded] = useState(false);
   const [isGrpLoaded, setIsGrpLoaded] = useState(false);
-  const roleID = localStorage.getItem("roleID");
+
   function Data() {
     setLeftside(!Leftside);
   }
 
-  const siteID = localStorage.getItem("siteID");
-  const groupID = localStorage.getItem("groupID");
-  const userID = localStorage.getItem("userID");
-
   const getUserCommunityByUserID = async () => {
-     setIsComLoaded(true)
-    const res = await CommunityService.getUserCommunityByUserID(userID);
+    setIsComLoaded(true)
+    const res = await CommunityService.getUserCommunityByUserID(UserID);
     if (res.data.data !== null) {
       if (res.data) {
         setUserCommunity(res.data);
       }
     }
-     setIsComLoaded(false)
+    setIsComLoaded(false)
   };
 
   const getAllGroupByCommunityID = async (selectedCommunity) => {
-     setIsGrpLoaded(true)
+    setIsGrpLoaded(true)
     const res = await GroupService.getAllGroupByCommunityID(selectedCommunity);
     if (res.data.data !== null) {
       if (res.data) {
         setUserGroup(res.data);
       }
+    } else {
+      setUserGroup([]);
     }
     setIsGrpLoaded(false)
   };
@@ -58,6 +60,8 @@ const MemberView = () => {
       if (res.data) {
         setUserGroupMembers(res.data);
       }
+    } else {
+      setUserGroupMembers([]);
     }
   };
 
@@ -82,8 +86,8 @@ const MemberView = () => {
     // setIsLoaded(true)
     setSelectedCommunity(e.target.value);
     // selectedGroup(selectedGroup)
-    setSelectedGroup(selectedGroup);
-    // setUserGroupMembers(userGroupMembers);
+    setSelectedGroup("");
+    setUserGroupMembers([]);
     // setIsLoaded(false)
   };
 
@@ -96,34 +100,31 @@ const MemberView = () => {
 
   const getCommunityGroupsWithCommunityDetails = async () => {
     setIsLoader(true);
-
-    const res = await GroupService.getCommunityGroupsWithCommunityDetails(
-      userID
-    );
-    setUserGroup(res.data);
+    const res = await GroupService.getCommunityGroupsWithCommunityDetails(UserID);
+    if (res?.data?.data !== null) {
+      setUserGroup(res.data);
+    } else {
+      setUserGroup([]);
+    }
     setIsLoader(false);
   };
+
   useEffect(() => {
- 
-    if (roleID == 4) {
+    if (RoleID == 4) {
       getCommunityGroupsWithCommunityDetails();
     }
   }, []);
 
   useEffect(() => {
     getUserCommunityByUserID(selectedCommunity);
-    getAllGroupByCommunityID(selectedCommunity,selectedGroup);
+    getAllGroupByCommunityID(selectedCommunity);
     GetAllGroupMembersExceptAdmin(selectedGroup);
   }, [selectedCommunity, selectedGroup]);
-
-
-
 
   return (
     <>
       <div>
         <AdminHeader Sidebar={Data} />
-
         <main className="">
           <div className="main-outer-container">
             <div className="dashboard-outer-container">
@@ -136,14 +137,12 @@ const MemberView = () => {
                   }
                 >
                   <SideBar />
-
                   <div className="right-sidebar">
                     <div className="inner-content-height">
                       <div className="admin-tools-menu ">
                         <div className="admin-tools-menu-heading ">
                           <h3>
-                            {" "}
-                            {roleID != 1 && (
+                            {Number(RoleID) !== Number(1) && (
                               <Link to="/admin-tools">
                                 <i
                                   className="fa fa-long-arrow-left me-2"
@@ -151,15 +150,14 @@ const MemberView = () => {
                                 ></i>
                               </Link>
                             )}
-                            Message Section{" "}
+                            Message Section
                           </h3>
                         </div>
-
                         <div className="row rolespermission-inner-box ">
-                          {parseInt(localStorage.getItem("roleID")) !== 4 && (
+                          {parseInt(RoleID) !== 4 && (
                             <div className="col-md-6">
                               <select
-                                class="form-select mb-4 w-100"
+                                className="form-select mb-4 w-100"
                                 aria-label="Default select example"
                                 value={selectedCommunity}
                                 onChange={(e) => handleCommunityOnChange(e)}
@@ -186,10 +184,9 @@ const MemberView = () => {
                               </select>
                             </div>
                           )}
-
                           <div className="col-md-6">
                             <select
-                              class="form-select"
+                              className="form-select"
                               aria-label="Default select example"
                               value={selectedGroup}
                               onChange={(e) => handleGroupOnChange(e)}
@@ -199,10 +196,14 @@ const MemberView = () => {
                                 <option selected disabled>
                                   Loding groups....
                                 </option>
+                              ) : (userGroup?.length < 1 ? (
+                                <option selected disabled>
+                                  Groups not available
+                                </option>
                               ) : (
                                 <>
                                   {userGroup &&
-                                    userGroup.map((data) =>
+                                    userGroup?.map((data) =>
                                       data.groupList ? (
                                         data.groupList.map((item) => (
                                           <option
@@ -222,15 +223,15 @@ const MemberView = () => {
                                       )
                                     )}
                                 </>
+                              )
                               )}
                             </select>
                           </div>
                         </div>
-
                         <div className="row">
                           <div className="col-md-12 rolespermission-inner-box">
                             <div className="table-responsive">
-                              <table class="table table-border">
+                              <table className="table table-border">
                                 <thead>
                                   <tr>
                                     <th> S. No. </th>
@@ -243,20 +244,19 @@ const MemberView = () => {
                                 </thead>
 
                                 <tbody>
-                                  {userGroupMembers &&userGroupMembers!==[]&&
-                                  userGroupMembers.length > 0 ? (
+                                  {userGroupMembers && userGroupMembers !== [] &&
+                                    userGroupMembers.length > 0 ? (
                                     userGroupMembers.map((item, index) => (
                                       <>
                                         <tr key={index}>
-                                          {" "}
                                           <td>{index + 1}</td>
                                           <td>
                                             <img
                                               src={
                                                 item.profilePicture
-                                                  ? IMAGE_BASE_URL+item.profilePicture
+                                                  ? IMAGE_BASE_URL + item.profilePicture
                                                   : process.env.PUBLIC_URL +
-                                                    " /Images/guest-user.jpg "
+                                                  " /Images/guest-user.jpg "
                                               }
                                               alt="Profile Pic"
                                               width="40"
@@ -274,10 +274,7 @@ const MemberView = () => {
                                                       !modalReducer.adminModalStatus,
                                                     groupId: item.groupID,
                                                     userId: item.groupMembersID,
-                                                    adminUserId:
-                                                      localStorage.getItem(
-                                                        "userID"
-                                                      ),
+                                                    adminUserId: UserID,
                                                     communityId:
                                                       item.communityID,
                                                     userName: item.firstName,
@@ -331,7 +328,7 @@ const MemberView = () => {
           </div>
         </main>
         <AdminSendMsgToUserModal />
-      </div>
+      </div >
 
       {/* <AdminSendMsgToUserModal />   */}
     </>

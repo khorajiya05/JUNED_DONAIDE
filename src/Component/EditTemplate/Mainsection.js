@@ -105,7 +105,6 @@ function Mainsection(porps) {
   };
 
   const UpdateCommunitySiteSection = async (id) => {
-   debugger;
     //e.preventDefault();
 
     const Content = editorRef.current.getContent();

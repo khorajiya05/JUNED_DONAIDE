@@ -1,26 +1,13 @@
-import React, { useState } from "react";
 import { Link } from "react-router-dom";
-//import { Link } from "react-bootstrap/lib/navbar";
 import Award from "../Assests/Images/award.png";
-import Header from "../Component/Header";
-import { AdminHeader } from "./admin-header";
-import SideBar from "../Component/SideBar/index";
-
 export const Congratulation = (props) => {
 
+  console.log(props);
+  const siteDomain = (props?.CommunityData || [])[0]?.communityDomain;
   const type = props.type;
-
-
 
   return (
     <div>
-      {/* {window.location.href.split("/")[3] === "upgrade-plan" ? (
-        <>
-          <AdminHeader />
-        </>
-      ) : (
-        <Header />
-      )} */}
       <main className="get-started-bg">
         {type === "CreateCommunity" ? (
           <div className="main-outer-container">
@@ -81,16 +68,17 @@ export const Congratulation = (props) => {
                 We love to have you and we're excited for you to build your
                 Community
               </p>
-             
+
               {props.CommunityData.map((item) => (
                 <Link key={item.communityId}
-                //   to={`/edit/${item.communityDomain}`}
-                to={
-                    "/edit/" +
-                    item.communitySiteName +
-                    "?id=" +
-                    item.communityId
-                  }
+                  to={`/${siteDomain}`}
+                  target="_blank"
+                  // to={
+                  //   "/edit/" +
+                  //   item.communitySiteName +
+                  //   "?id=" +
+                  //   item.communityId
+                  // }
                   type="button"
                   name="next"
                   className="btn  let-get-rock-btn"

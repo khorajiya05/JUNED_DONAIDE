@@ -1,10 +1,13 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { IMAGE_BASE_URL } from "../../Config";
 
 const GroupMemberList = (props) => {
+  
   const { groupMembersDetails ,permission} = props;
-;
-const roleID=parseInt(localStorage.getItem("roleID"))
+  const {RoleID} = useSelector((state) => state?.auth?.loginData);
+
+
   return (
 
     <div className="container-fluid admin-group-page bg-grey-wall">
@@ -33,7 +36,7 @@ const roleID=parseInt(localStorage.getItem("roleID"))
                         <div className="notification-page-content">
                           <h5>
                             <span>
-                              {memberData.firstName} {memberData.lastName} {roleID===4?"Group Admin":""}
+                              {memberData.firstName} {memberData.lastName} {RoleID===4?"Group Admin":""}
                             </span>
                           </h5>
                           <p>{memberData.email}</p>

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-
-import { Editabletemplateheader } from "./EditTemplateHeader";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import Modal from "react-modal";
-import CommunityService from "../Services/CommunityService";
 import { useEffect } from "react";
+import { v4 as uuid } from "uuid";
+
+import CommunityService from "../Services/CommunityService";
+import { Editabletemplateheader } from "./EditTemplateHeader";
 import MainsectionComp from "../Component/EditTemplate/Mainsection";
 import CommunitygroupComp from "../Component/EditTemplate/Communitygroup";
 import FootersectionComp from "../Component/EditTemplate/Footersection";
@@ -17,9 +19,7 @@ import UpdateFirstSection from "../Component/EditTemplate/UpdateEditTempComps/Up
 import UpdateSecSection from "../Component/EditTemplate/UpdateEditTempComps/UpdateSecSection";
 import UpdateThirdSection from "../Component/EditTemplate/UpdateEditTempComps/UpdateThirdSection";
 import UpdateFourthSection from "../Component/EditTemplate/UpdateEditTempComps/UpdateFourthSection";
-import { useDispatch, useSelector } from "react-redux";
 import { getCommunityDataBySiteId } from "../ReduxStore/Actions/communityAction";
-import { v4 as uuid } from "uuid";
 import { IMAGE_BASE_URL } from "../Config";
 // import data from "../http-Common";
 
@@ -36,7 +36,16 @@ const customStyles = {
 
 const Congratulation = () => {
 
+  const dispatch = useDispatch();
+  const location = useLocation();
+
   const { UserID } = useSelector((state) => state.auth?.loginData);
+  const allReducers = useSelector((state) => state.openEditorReducer);
+
+  const { search } = location
+  const getSiteID = new URLSearchParams(search).get("id");
+  // let siteID = localStorage.getItem("siteIDs");
+  localStorage.setItem("paramsSiteID", getSiteID);
 
   const [logoImg, setLogoImg] = useState(null);
   const [selectedLogoImg, setSelectedLogoImg] = useState(null);
@@ -50,24 +59,12 @@ const Congratulation = () => {
   const [UpdatebuttonHide, setUpdatebuttonHide] = useState(true);
   const [indexForMenuItem, setIndexForMenuItem] = useState("");
   const [renderComp, setRenderComp] = useState(0);
-  const [defaultTemplateData, setDefaultTemplateData] = useState([]);
   const [sectionDataLoader, setSectionDataLoader] = useState(false);
-  const [sectionData, setSectionData] = useState([]);
-  const [isExists, setIsExists] = useState(false);
   const [addListItem, setAddListItem] = useState([]);
 
-  const dispatch = useDispatch();
-  const allReducers = useSelector((state) => state.openEditorReducer);
 
 
-  const search = useLocation().search;
-
-  let siteID = localStorage.getItem("siteIDs");
-
-  const getSiteID = new URLSearchParams(search).get("id");
-
-  localStorage.setItem("paramsSiteID", getSiteID);
-  siteID = getSiteID !== null ? getSiteID : siteID;
+  // siteID = getSiteID !== null ? getSiteID : siteID;  
   // To generate the unique id to track the every appended items in the MenuList
   const unique_id = uuid();
   const small_id = unique_id.slice(0, 8);
@@ -95,8 +92,6 @@ const Congratulation = () => {
       setImageForUpload(event.target.files[0]);
     };
   };
-  console.log("I send in api:", imageForUpload);
-  console.log("receive from api:", selectedLogoImg);
 
   //add todo list item
   const addTodo = (text) => {
@@ -162,12 +157,12 @@ const Congratulation = () => {
     const formData = new FormData();
     formData.append("HeaderLogo", logoImg);
     console.log("f====", formData);
-    if (allCommunityData.siteID === siteID) {
+    if (allCommunityData.siteID === getSiteID) {
       const Updatecommunity = {
         // headerLogo: !logoImg ? allCommunityData.headerLogo : logoImg,
         headerLogo: imageForUpload ? imageForUpload : null,
         userID: UserID,
-        siteID: getSiteID !== null ? getSiteID : siteID,
+        siteID: getSiteID,
         buisnessName: !buisnessName
           ? allCommunityData.buisnessName
           : buisnessName,
@@ -188,9 +183,9 @@ const Congratulation = () => {
       closeModal();
     } else {
       const community = {
-        headerLogo: logoImg,
+        headerLogo: imageForUpload,
         userID: UserID,
-        siteID: getSiteID !== null ? getSiteID : siteID,
+        siteID: getSiteID,
         buisnessName: buisnessName,
         menuItems: addListItem,
       };
@@ -212,10 +207,7 @@ const Congratulation = () => {
   const getAllCommunityData = async () => {
     let userId = UserID;
     setComHeadLoader(true);
-    const res = await CommunityService.getAllCommunityHeaderDetails(
-      userId,
-      getSiteID !== null ? getSiteID : siteID
-    );
+    const res = await CommunityService.getAllCommunityHeaderDetails(userId, getSiteID);
     setAllCommunityData(res.data);
     setLogoImg(res.data.headerLogo);
     setAddListItem(res.data.menuItems);
@@ -230,55 +222,38 @@ const Congratulation = () => {
    * get communiti site detail by ID api call
    */
   let getCommuniSiteDetailsBySiteID = async () => {
-    if (siteID !== null) {
+    if (getSiteID !== null) {
       setSectionDataLoader(true);
-      const getPublicSideUrl =
-        await CommunityService.getCommunitySiteDetailsBySiteID(siteID);
-
+      const getPublicSideUrl = await CommunityService.getCommunitySiteDetailsBySiteID(getSiteID);
       if (!getPublicSideUrl.data.hasOwnProperty("statusCode")) {
-        setBuisnessName(
-          getPublicSideUrl.data.communitySite[0].communitySiteName
-        );
-        setBuisnessNameView(
-          getPublicSideUrl.data.communitySite[0].communitySiteName
-        );
+        setBuisnessName(getPublicSideUrl.data.communitySite[0].communitySiteName);
+        setBuisnessNameView(getPublicSideUrl.data.communitySite[0].communitySiteName);
       }
       setSectionDataLoader(false);
-    } else {
-      if (allCommunityData.hasOwnProperty("buisnessName")) {
-        if (allCommunityData.buisnessName !== null) {
-          setBuisnessName(allCommunityData.buisnessName);
-        } else {
-          setSectionDataLoader(true);
-          const getPublicSideUrl =
-            await CommunityService.getCommunitySiteDetailsBySiteID(siteID);
-
-          if (!getPublicSideUrl.data.hasOwnProperty("statusCode")) {
-            setBuisnessName(
-              getPublicSideUrl.data.communitySite[0].communitySiteName
-            );
-            setBuisnessNameView(
-              getPublicSideUrl.data.communitySite[0].communitySiteName
-            );
-          }
-          setSectionDataLoader(false);
-        }
-      } else {
-        setSectionDataLoader(true);
-        const getPublicSideUrl =
-          await CommunityService.getCommunitySiteDetailsBySiteID(siteID);
-
-        if (!getPublicSideUrl.data.hasOwnProperty("statusCode")) {
-          setBuisnessName(
-            getPublicSideUrl.data.communitySite[0].communitySiteName
-          );
-          setBuisnessNameView(
-            getPublicSideUrl.data.communitySite[0].communitySiteName
-          );
-        }
-        setSectionDataLoader(false);
-      }
     }
+    // else {
+    //   if (allCommunityData.hasOwnProperty("buisnessName")) {
+    //     if (allCommunityData.buisnessName !== null) {
+    //       setBuisnessName(allCommunityData.buisnessName);
+    //     } else {
+    //       setSectionDataLoader(true);
+    //       const getPublicSideUrl = await CommunityService.getCommunitySiteDetailsBySiteID(getSiteID);
+    //       if (!getPublicSideUrl.data.hasOwnProperty("statusCode")) {
+    //         setBuisnessName(getPublicSideUrl.data.communitySite[0].communitySiteName);
+    //         setBuisnessNameView(getPublicSideUrl.data.communitySite[0].communitySiteName);
+    //       }
+    //       setSectionDataLoader(false);
+    //     }
+    //   } else {
+    //     setSectionDataLoader(true);
+    //     const getPublicSideUrl = await CommunityService.getCommunitySiteDetailsBySiteID(getSiteID);
+    //     if (!getPublicSideUrl.data.hasOwnProperty("statusCode")) {
+    //       setBuisnessName((getPublicSideUrl?.data?.communitySite || [])[0]?.communitySiteName);
+    //       setBuisnessNameView((getPublicSideUrl?.data?.communitySite || [])[0]?.communitySiteName);
+    //     }
+    //     setSectionDataLoader(false);
+    //   }
+    // }
   };
 
   useEffect(() => {
@@ -305,8 +280,8 @@ const Congratulation = () => {
   };
 
   const GetCommunitySiteSection = async () => {
-    if (siteID !== null) {
-      const res = await CommunityService.getCommunitySiteSection(siteID);
+    if (getSiteID !== null) {
+      const res = await CommunityService.getCommunitySiteSection(getSiteID);
       if (res.data.length > 0) {
         let getFirstSecData = res.data.filter((value) => {
           if (value.order === 1) {
@@ -318,7 +293,7 @@ const Congratulation = () => {
         }
       }
     } else {
-      firstTimeGetCommunityData(siteID);
+      firstTimeGetCommunityData(getSiteID);
     }
   };
 
@@ -444,7 +419,7 @@ const Congratulation = () => {
   }
 
   let createSiteId = () => {
-    if (siteID === null) {
+    if (getSiteID === null) {
       alert("Please create site id.");
     } else {
       setMainsections(true);
@@ -492,6 +467,7 @@ const Congratulation = () => {
                               <input
                                 id="input-file"
                                 type="file"
+                                accept="image/*"
                                 name="myFile"
                                 onChange={changeHandler}
                               />
@@ -581,10 +557,9 @@ const Congratulation = () => {
                             <br />
                           </div>
                           {addListItem?.map((data, index) => (
-                            <div className="edit-template-menu-title">
+                            <div className="edit-template-menu-title" key={data.menuItemID}>
                               <div
                                 className="edit-title-menu"
-                                key={data.menuItemID}
                               >
                                 {data.menuItemName}
                               </div>
@@ -595,7 +570,6 @@ const Congratulation = () => {
                                   aria-hidden="true"
                                   onClick={() => editItem(data, index)}
                                 ></i>
-
                                 <i
                                   className="fa fa-trash"
                                   aria-hidden="true"
@@ -668,7 +642,7 @@ const Congratulation = () => {
 
                 <nav
                   className={`navbar navbar-expand-md  template-navbr-edit ${window.location.href.split("/")[3] ===
-                    `preview?id=${siteID}`
+                    `preview?id=${getSiteID}`
                     ? ""
                     : "edit-sec"
                     } shadow`}
@@ -689,8 +663,7 @@ const Congratulation = () => {
                           allCommunityData.headerLogo !== undefined
                             ? allCommunityData.headerLogo !== null
                               ? `${IMAGE_BASE_URL + allCommunityData.headerLogo}`
-                              : process.env.PUBLIC_URL +
-                              "/Images/header_logo.png"
+                              : process.env.PUBLIC_URL + "/Images/header_logo.png"
                             : process.env.PUBLIC_URL + "/Images/header_logo.png"
                         }
                         width={100}

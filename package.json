@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "31.0.0",
+    "@ckeditor/ckeditor5-react": "3.0.3",
+    "@ckeditor/ckeditor5-upload": "31.1.0",
+    "ckeditor5-custom-build": "file:ckeditor5",
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/react-fontawesome": "^0.1.18",
@@ -40,6 +44,7 @@
     "react-credit-cards": "^0.8.3",
     "react-data-table-component": "^7.5.2",
     "react-datepicker": "^4.8.0",
+    "react-dates": "^21.8.0",
     "react-doc-viewer": "^0.1.5",
     "react-documents": "0.0.2",
     "react-dom": "^18.1.0",
@@ -78,7 +83,7 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "start": "SET PORT=8000 && react-scripts start",
+    "start": "PORT=8000 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -103,6 +108,7 @@
     "start": "rimraf ./build && react-scripts --expose-gc --max_old_space_size=4096 start"
   },
   "devDependencies": {
+    "@types/ckeditor__ckeditor5-upload": "27.0.6",
     "favicons-webpack-plugin": "^5.0.2",
     "webpack-pwa-manifest": "^4.3.0"
   }

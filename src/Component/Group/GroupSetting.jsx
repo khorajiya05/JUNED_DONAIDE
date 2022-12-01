@@ -8,6 +8,9 @@ import { getRoleAndPermissionListByID } from "../../ReduxStore/Actions/roleAndPe
 import { useDispatch, useSelector } from "react-redux";
 
 const GroupSetting = () => {
+
+  const { UserID, RoleID } = useSelector((state) => state.auth?.loginData);
+
   const [Leftside, setLeftside] = useState(true);
   const [userCommunity, setUserCommunity] = useState([]);
   const [selectedCommunity, setSelectedCommunity] = useState("");
@@ -17,21 +20,17 @@ const GroupSetting = () => {
   const [isComLoaded, setIsComLoaded] = useState(false);
   const [isGrpLoaded, setIsGrpLoaded] = useState(false);
   const [loader, setLoader] = useState(false);
- 
+
+  const dispatch = useDispatch();
+  const permission = useSelector((state) => state.roleAndPermision.data);
+
   function Data() {
     setLeftside(!Leftside);
-  }
-  const dispatch = useDispatch();
-  const siteID = localStorage.getItem("siteID");
-  const groupID = localStorage.getItem("groupID");
-  const userID = localStorage.getItem("userID");
-  const roleID = localStorage.getItem("roleID");
-  const permission = useSelector(
-    (state) => state.roleAndPermision.data.payload
-  );
+  };
+
   const getUserCommunityByUserID = async () => {
     setIsComLoaded(true);
-    const res = await CommunityService.getUserCommunityByUserID(userID);
+    const res = await CommunityService.getUserCommunityByUserID(UserID);
     if (res.data.data !== null) {
       if (res.data.length > 0) {
         setUserCommunity(res.data);
@@ -89,7 +88,7 @@ const GroupSetting = () => {
 
   const handleCommunityOnChange = (e) => {
     setSelectedCommunity(e.target.value);
-    selectedGroup(selectedGroup);
+    // selectedGroup(selectedGroup);
     setUserGroupMembers(userGroupMembers);
   };
 
@@ -103,13 +102,13 @@ const GroupSetting = () => {
     setLoader(true);
 
     const res = await GroupService.getCommunityGroupsWithCommunityDetails(
-      userID
+      UserID
     );
     setUserGroup(res.data);
     setLoader(false);
   };
   useEffect(() => {
-    if (roleID == 4) {
+    if (RoleID == 4) {
       getCommunityGroupsWithCommunityDetails();
     }
   }, []);
@@ -121,7 +120,7 @@ const GroupSetting = () => {
   }, [selectedCommunity, selectedGroup]);
 
   useEffect(() => {
-    dispatch(getRoleAndPermissionListByID(userID, roleID));
+    dispatch(getRoleAndPermissionListByID(UserID, RoleID));
   }, []);
 
   return (
@@ -145,8 +144,8 @@ const GroupSetting = () => {
                     <div className="admin-tools-menu">
                       <div className="admin-tools-menu-heading">
                         <h3>
-                          {roleID != 1 && (
-                            <Link to="/admin-tools">
+                          {RoleID != 1 && (
+                            <Link to="/admin-group">
                               <i
                                 className="fa fa-long-arrow-left me-2"
                                 aria-hidden="true"
@@ -247,27 +246,26 @@ const GroupSetting = () => {
                                 <th> Email</th>
                                 <th> Access</th>
                                 {permission &&
-                                permission.length > 0 &&
-                                permission.filter(
-                                  (e) => e.permissionName === "Remove Member"
-                                ).length > 0 &&
-                                permission.filter(
-                                  (e) => e.permissionName === "Remove Member"
-                                ).length > 0 ? (
+                                  permission.length > 0 &&
+                                  permission.filter(
+                                    (e) => e.permissionName === "Remove Member"
+                                  ).length > 0 &&
+                                  permission.filter(
+                                    (e) => e.permissionName === "Remove Member"
+                                  ).length > 0 ? (
                                   <th> Action</th>
                                 ) : (
                                   ""
                                 )}
-                              
+
                               </tr>
                             </thead>
 
                             <tbody>
                               {userGroupMembers &&
-                              userGroupMembers.length > 0 ? (
+                                userGroupMembers.length > 0 ? (
                                 userGroupMembers.map((item, index) => (
-                                  <tr>
-                                    {" "}
+                                  <tr key={index}>
                                     <td>{index + 1}</td>
                                     <td>{item.firstName}</td>
                                     <td>{item.lastName}</td>
@@ -281,70 +279,70 @@ const GroupSetting = () => {
                                       {item.groupAccessStatus}
                                     </td>
                                     {permission &&
-                                    permission.length > 0 &&
-                                    permission.filter(
-                                      (e) =>
-                                        e.permissionName === "Remove Member"
-                                    ).length > 0 &&
-                                    permission.filter(
-                                      (e) =>
-                                        e.permissionName === "Remove Member"
-                                    ).length > 0 ? (
+                                      permission.length > 0 &&
+                                      permission.filter(
+                                        (e) =>
+                                          e.permissionName === "Remove Member"
+                                      ).length > 0 &&
+                                      permission.filter(
+                                        (e) =>
+                                          e.permissionName === "Remove Member"
+                                      ).length > 0 ? (
                                       <td>
                                         {item.groupAccessStatus === "Pending"
                                           ? permission &&
-                                            permission.length > 0 &&
-                                            permission.filter(
-                                              (e) =>
-                                                e.permissionName ===
-                                                "Approve/Deny memebr request"
-                                            ).length > 0 && (
-                                              <>
-                                                <button
-                                                  className="btn btn-primary"
-                                                  style={{
-                                                    marginRight: "10px",
-                                                  }}
-                                                  onClick={() =>
-                                                    groupMemberStatusUpdate(
-                                                      item.groupMembersID,
-                                                      "Approved"
-                                                    )
-                                                  }
-                                                >
-                                                  Approved
-                                                </button>
-                                                <button
-                                                  className="btn btn-danger ml-2"
-                                                  onClick={() =>
-                                                    groupMemberStatusUpdate(
-                                                      item.groupMembersID,
-                                                      "Denie"
-                                                    )
-                                                  }
-                                                >
-                                                  Deny
-                                                </button>
-                                              </>
-                                            )
-                                          : permission &&
-                                            permission.length > 0 &&
-                                            permission.filter(
-                                              (e) =>
-                                                e.permissionName ===
-                                                "Remove Member"
-                                            ).length > 0 && (
+                                          permission.length > 0 &&
+                                          permission.filter(
+                                            (e) =>
+                                              e.permissionName ===
+                                              "Approve/Deny memebr request"
+                                          ).length > 0 && (
+                                            <>
                                               <button
-                                                className="btn btn-danger ml-2"
+                                                className="btn btn-primary"
+                                                style={{
+                                                  marginRight: "10px",
+                                                }}
                                                 onClick={() =>
-                                                  deleteGroupMember(
-                                                    item.groupMembersID
+                                                  groupMemberStatusUpdate(
+                                                    item.groupMembersID,
+                                                    "Approved"
                                                   )
                                                 }
                                               >
-                                                Remove
+                                                Approved
                                               </button>
-                                            )}
+                                              <button
+                                                className="btn btn-danger ml-2"
+                                                onClick={() =>
+                                                  groupMemberStatusUpdate(
+                                                    item.groupMembersID,
+                                                    "Denie"
+                                                  )
+                                                }
+                                              >
+                                                Deny
+                                              </button>
+                                            </>
+                                          )
+                                          : permission &&
+                                          permission.length > 0 &&
+                                          permission.filter(
+                                            (e) =>
+                                              e.permissionName ===
+                                              "Remove Member"
+                                          ).length > 0 && (
+                                            <button
+                                              className="btn btn-danger ml-2"
+                                              onClick={() =>
+                                                deleteGroupMember(
+                                                  item.groupMembersID
+                                                )
+                                              }
+                                            >
+                                              Remove
+                                            </button>
+                                          )}
                                       </td>
                                     ) : (
                                       ""

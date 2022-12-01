@@ -56,7 +56,7 @@ export const Resetpassword = () => {
           setColor("green");
           history("/login");
         } else {
-          setError("Something went wrong.");
+          setError(userResponse.data.message);
           setColor("red");
         }
       })

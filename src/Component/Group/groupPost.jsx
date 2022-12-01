@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import GroupService from "../../Services/GroupService";
 import CommentBox from "./commentBox";
 import ShowPostComments from "./ShowPostComments";
@@ -14,6 +15,8 @@ const GroupPost = (props) => {
     getAllGroupPostDataByGroupIDCommunityID
   } = props;
 
+  const { UserID } = useSelector((state) => state?.auth?.loginData);
+
   const [postComment, setPostComment] = useState("");
 
   const PostComments = (communityId, groupId, postID, x) => {
@@ -21,7 +24,7 @@ const GroupPost = (props) => {
       GroupID: groupId,
       SiteID: communityId,
       PostID: postID,
-      UserID: localStorage.getItem("userID"),
+      UserID,
       Comments: postComment,
     };
 
@@ -30,6 +33,7 @@ const GroupPost = (props) => {
         if (response.data.status === "SUCCESS") {
           setPostComment("");
           showCommentSection(item.postID, true);
+          getAllGroupPostDataByGroupIDCommunityID();
           parentCallback(renderComp + 1);
         }
       })
@@ -42,17 +46,14 @@ const GroupPost = (props) => {
     <>
       <div style={{ padding: "5px" }}>
         <div className="comments-section-custom" >
-        <ShowPostComments
-        getAllGroupPostDataByGroupIDCommunityID={getAllGroupPostDataByGroupIDCommunityID}
-          item={item}
-          showComments={showComments}
-          postComments={postComments}
-          showCommentSection={showCommentSection}
-        />
+          <ShowPostComments
+            getAllGroupPostDataByGroupIDCommunityID={getAllGroupPostDataByGroupIDCommunityID}
+            item={item}
+            showComments={showComments}
+            postComments={postComments}
+            showCommentSection={showCommentSection}
+          />
         </div>
-       
-       
-
         <CommentBox
           buttonContent="Post"
           comment={postComment}

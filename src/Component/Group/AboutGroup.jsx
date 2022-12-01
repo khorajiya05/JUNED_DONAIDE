@@ -10,10 +10,9 @@ const AboutGroup = (props) => {
             <div className="sec-first">
               <h3>About</h3>
             </div>
-
             <div className="flex--about">
               <span>
-                <i class="fa fa-globe" aria-hidden="true"></i>
+                <i className="fa fa-globe" aria-hidden="true"></i>
               </span>
               <div className="areatext">
                 <h3>
@@ -26,10 +25,9 @@ const AboutGroup = (props) => {
                 </p>
               </div>
             </div>
-
             <div className="flex--about">
               <span>
-                <i class="fa fa-eye" aria-hidden="true"></i>
+                <i className="fa fa-eye" aria-hidden="true"></i>
               </span>
               <div className="areatext">
                 <h3>Visible</h3>
@@ -40,11 +38,9 @@ const AboutGroup = (props) => {
                 </p>
               </div>
             </div>
-
-
             <div className="flex--about">
               <span>
-              <i class="fa fa-film" aria-hidden="true"></i>
+              <i className="fa fa-film" aria-hidden="true"></i>
               </span>
               <div className="areatext">
                 <h3>Description</h3>
@@ -54,11 +50,7 @@ const AboutGroup = (props) => {
                   : "No Description"}
                 </p>
               </div>
-            </div>
-
-
-
-           
+            </div>    
           </div>
         </div>
       </div>

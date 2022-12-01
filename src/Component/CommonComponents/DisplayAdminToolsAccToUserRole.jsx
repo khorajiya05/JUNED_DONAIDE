@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 let DisplayAdminToolsAccToUserRole = ({ cartDetailsObj }) => {
- 
+
     return (
         <div className="adm-tools-outer-box">
             {cartDetailsObj.length > 0 ?
@@ -10,6 +10,7 @@ let DisplayAdminToolsAccToUserRole = ({ cartDetailsObj }) => {
                     <Link
                         to={cardData.router}
                         className="adm-tools-card text-decoration-none"
+                        key={index}
                     >
                         <div className="adm-tools-card-inner">
                             <div className="adm-tools-card-icon">

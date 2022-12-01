@@ -8,17 +8,20 @@ import { useDispatch, useSelector } from "react-redux";
 import logo from "../Assests/Images/Combo-logo.png";
 import { getWithExpiry } from "../utils/helpers/password";
 import { loginActionThunk } from "../ReduxStore/auth/auth.actions.async";
+import { getAllCommunityDataActionThunk } from "../ReduxStore/community/community.actions.async";
 
 export const Login = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const getCredentialsData = getWithExpiry("rememberMe");
+
+  const loginData = useSelector((state) => state.auth?.loginData);
   const getRememberMe = localStorage.getItem("rememberMe");
+  const token = localStorage.getItem("token");
+  const getCredentialsData = getWithExpiry("rememberMe");
 
   const [passwordType, setPasswordType] = useState("password");
   const [rememberMe, setRememberMe] = useState(Boolean(getRememberMe));
-  const loginData = useSelector((state) => state.auth?.loginData);
 
   /**
    * login validation schema
@@ -60,11 +63,27 @@ export const Login = () => {
     }
     setPasswordType("password");
   };
+
+
+  /**
+   * when login page is load that time
+   * all community data will fatch and store in redux state
+   */
   useEffect(() => {
-if(loginData){
-  navigate('/admin-tools');
-}
-  },[loginData])
+    dispatch(getAllCommunityDataActionThunk());
+  }, [dispatch])
+
+
+    /**
+   * when login page is at load that time
+   * check if user already logged in then redirect to dashboard page
+   */
+     useEffect(() => {
+      if (loginData && token) {
+        loginData?.IsMaster === "True" && String(loginData?.RoleID) === String(1) ? navigate("/owner-admin-list") : navigate("/admin-tools")
+      }
+    }, [loginData, navigate, token])
+
 
   return (
     <div>
@@ -121,10 +140,10 @@ if(loginData){
                     Password
                   </label>
                   <input
-                    onCopy={()=>false}
-                    onCut={()=>false}
-                    onDrag={()=>false}
-                    onDrop={()=>false}
+                    onCopy={() => false}
+                    onCut={() => false}
+                    onDrag={() => false}
+                    onDrop={() => false}
                     autoComplete="off"
                     type={passwordType}
                     id="password"

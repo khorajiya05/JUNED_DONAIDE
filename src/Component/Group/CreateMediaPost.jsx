@@ -38,10 +38,10 @@ const CreateMediaPost = (props) => {
         </div>
 
 
-        <div class="modal-body-create-grp create-event">
+        <div className="modal-body-create-grp create-event">
           <form>
-            <div class="create-event-from mt-4">
-              <div class="row">
+            <div className="create-event-from mt-4">
+              <div className="row">
               <div className="create-post-outer-box">
           <div className="create-post-inner-box">
             <div className="create-post-text">
@@ -110,7 +110,7 @@ const CreateMediaPost = (props) => {
                   />
 
                   <i
-                    class="fa fa-picture-o"
+                    className="fa fa-picture-o"
                     aria-hidden="true"
                   ></i>
                   {/* <span>Upload Image</span> */}
@@ -122,7 +122,7 @@ const CreateMediaPost = (props) => {
                     className="d-none"
                   />
                   <i
-                    class="fa fa-camera-retro"
+                    className="fa fa-camera-retro"
                     aria-hidden="true"
                   ></i>
                   {/* <span>Click Image</span> */}
@@ -135,7 +135,7 @@ const CreateMediaPost = (props) => {
                     
                   />
                   <i
-                    class="fa fa-video-camera"
+                    className="fa fa-video-camera"
                     aria-hidden="true"
                   ></i>
                   {/* <span>Click Image</span> */}

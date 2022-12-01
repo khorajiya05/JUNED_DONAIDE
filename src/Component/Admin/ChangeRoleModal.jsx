@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "react-modal";
-import RoleAndPermissionService from "../../Services/RoleAndPermissionService";
-import UserServices from "../../Services/UserServices";
-
-// import {
-//   NotificationContainer,
-//   NotificationManager,
-// } from "react-notifications";
 import "react-notifications/lib/notifications.css";
+import { useDispatch, useSelector } from "react-redux";
+import Select from "react-select";
+
+
+import RoleAndPermissionService from "../../Services/RoleAndPermissionService";
+import { changeLogedUserRoleActionThunk } from "../../ReduxStore/auth/auth.actions.async";
+
 
 const customStyles = {
   content: {
@@ -24,47 +24,39 @@ const customStyles = {
 };
 
 const ChangeRoleModal = (porps) => {
-  const { showRoleModal, closeRoleModal } = porps;
-  const roleID = localStorage.getItem("roleID");
-  const userID = localStorage.getItem("userID");
-  const [allRole, setAllRole] = useState([]);
-  const [allUsers, setAllUsers] = useState([]);
 
+  const dispatch = useDispatch();
+
+  const { showRoleModal, closeRoleModal } = porps;
+  const { RoleID, UserID } = useSelector((state) => state?.auth?.loginData);
+
+  const [allRole, setAllRole] = useState([]);
+
+  /**
+   * get all role api call
+   */
   const getAllRole = async () => {
     const res = await RoleAndPermissionService.getAllRole();
     if (res.data) {
-      setAllRole(res.data);
+      setAllRole(res.data || []);
+    } else {
+      setAllRole([]);
     }
   };
 
-  const GetUserProfileDataById = async () => {
-    const res = await UserServices.GetUserProfileDataById(userID);
-    if (res.data) {
-     
-      if(res.data){
-      
-        localStorage.setItem("roleID",res.data.roleID)
-      }
-
-    }
-  };
+  /**
+   * change role submit api call
+   * @param {} e 
+   */
   const changeUserRole = async (e) => {
-    const roleID = e.target.value;
-
-    const res = await UserServices.changeUserRole(userID, roleID);
-    if (res.data) {
-   
-        localStorage.setItem("roleID",res.data)
-        GetUserProfileDataById()
-    }
+    dispatch(changeLogedUserRoleActionThunk(UserID, e.target?.value));
+    closeRoleModal();
   };
 
   useEffect(() => {
     getAllRole();
-    GetUserProfileDataById()
   }, []);
 
-  console.log("roleID>>>>>>>>>>>111",roleID)
   return (
     <div>
       <Modal
@@ -82,22 +74,24 @@ const ChangeRoleModal = (porps) => {
             </button>
           </div>
           <div>
-            
             <select
               className="w-100"
-              defaultValue={roleID}
               onChange={(e) => changeUserRole(e)}
             >
               {allRole &&
-                allRole.map((item) => (
-                <>
-                 
-                  <option defaultValue={roleID} key={item._id} value={item._id}>
-                    {item.roleName}
-            
-                  </option>
-                  </>  ))}{" "}
-            </select>{" "}
+                allRole?.map((item) => (
+                  <>
+                    <option
+                      selected={Number(item?._id) === Number(RoleID) ? true : false}
+                      key={item?._id}
+                      value={item?._id}
+                    >
+                      {item?.roleName}
+                    </option>
+                  </>
+                ))
+              }
+            </select>
           </div>
         </div>
       </Modal>

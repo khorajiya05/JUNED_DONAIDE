@@ -17,7 +17,7 @@ let DefaultFourthSection = () => {
 
     const GetAllDefaultSectionsTemplate = async () => {
         const res = await CommunityService.getAllDefaultSectionsTemplate();
-        setDefaultFourthTemplateData(res.data[3].sectionContent);
+        setDefaultFourthTemplateData(res.data[3]?.sectionContent);
     };
 
     useEffect(() => {

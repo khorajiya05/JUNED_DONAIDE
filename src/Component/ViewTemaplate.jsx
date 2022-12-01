@@ -2,15 +2,26 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import CommunityService from "../Services/CommunityService";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import { Link } from "react-router-dom";
 import AddGroupModal from "./Group/joinGroupModal";
 import { modalAct } from "../ReduxStore/Actions/modalActs";
 import { useDispatch, useSelector } from "react-redux";
 import { IMAGE_BASE_URL } from "../Config";
+import { getAllCommunityDataActionThunk } from "../ReduxStore/community/community.actions.async";
 
 const ViewTemplate = () => {
+
+  let dispatch = useDispatch();
+  let location = useLocation();
+  const navigate = useNavigate();
+  const params = useParams();
+
+  const { siteName } = params;
+  let newLocation = location?.pathname?.split("/");
   const modalReducer = useSelector((state) => state.modalReducer);
+  const { allCommunityData } = useSelector((state) => state?.community);
+
   const [defaultTemplateData, setDefaultTemplateData] = useState([]);
   const [communityGroup, setCommunityGroup] = useState([]);
   const [communitySiteSection, setCommunitySiteSection] = useState([]);
@@ -26,14 +37,11 @@ const ViewTemplate = () => {
   let [FooterSection, setFooterSection] = useState(null);
   const [comHeadLoader, setComHeadLoader] = useState(false);
   const [comSectionLoader, setSectionHeadLoader] = useState(false);
-  let dispatch = useDispatch();
-  let location = useLocation().pathname;
-  let newLocation = location.split("/");
+
 
   const GetAllDefaultSectionsTemplate = async () => {
     const res = await CommunityService.getAllDefaultSectionsTemplate();
     setDefaultTemplateData(res.data);
-
     res.data.map((value) => {
       if (value._id === 1) {
         setDefaultMainSection(value.sectionContent);
@@ -49,9 +57,6 @@ const ViewTemplate = () => {
       }
     });
   };
-  useEffect(() => {
-    GetAllDefaultSectionsTemplate();
-  }, [defaultTemplateData._id]);
 
   const getCommunitySiteSectionByDomain = async () => {
     const res = await CommunityService.getCommunitySiteSectionByDomain(
@@ -91,9 +96,31 @@ const ViewTemplate = () => {
   };
 
   useEffect(() => {
+    GetAllDefaultSectionsTemplate();
+  }, [defaultTemplateData._id]);
+
+  useEffect(() => {
     getCommunitySiteSectionByDomain();
   }, []);
 
+  useEffect(() => {
+    if (allCommunityData === null || allCommunityData === undefined || allCommunityData === "") {
+      dispatch(getAllCommunityDataActionThunk());
+      return;
+    }
+    const isExistCommunity = allCommunityData?.findIndex((site) => site?.communityDomain === location.pathname?.split("/")[1]) > -1;
+    if (!isExistCommunity) {
+      Promise.resolve(dispatch(getAllCommunityDataActionThunk()))
+        .then(() => {
+          const isExistCommunity = allCommunityData?.findIndex((site) => site?.communityDomain === location.pathname?.split("/")[1]) > -1;
+          if (!isExistCommunity) {
+            navigate("/");
+          }
+        })
+    }
+  }, [allCommunityData, dispatch, navigate, siteName])
+
+  console.log(location.pathname);
   return (
     <div>
       <main className="get-started-bg">
@@ -112,7 +139,7 @@ const ViewTemplate = () => {
                   <img
                     src={
                       communityHeader.headerLogo
-                        ? IMAGE_BASE_URL+communityHeader.headerLogo
+                        ? IMAGE_BASE_URL + communityHeader.headerLogo
                         : process.env.PUBLIC_URL + "/Images/header_logo.png"
                     }
                     alt=""
@@ -140,18 +167,18 @@ const ViewTemplate = () => {
                 <ul className="navbar-nav get-started-links ms-auto ">
                   {communityHeader.menuItems
                     ? communityHeader.menuItems.map((value) => (
-                        <>
-                          <li className="nav-item" key={value.menuItemName}>
-                            <Link
-                              className="nav-link"
-                              target="_blank"
-                              to={`/${value.menuItemURL}`}
-                            >
-                              {value.menuItemName}
-                            </Link>
-                          </li>
-                        </>
-                      ))
+                      <>
+                        <li className="nav-item" key={value.menuItemName}>
+                          <Link
+                            className="nav-link"
+                            target="_blank"
+                            to={`/${value.menuItemURL}`}
+                          >
+                            {value.menuItemName}
+                          </Link>
+                        </li>
+                      </>
+                    ))
                     : ""}
                 </ul>
               </div>
@@ -193,7 +220,7 @@ const ViewTemplate = () => {
                 </div>
 
                 <div className="text-align-center Group-section-main">
-                  <h3 class="border-0">Community Group</h3>
+                  <h3 className="border-0">Community Group</h3>
                   <div className="Group-section">
                     {gropuSection !== null ? (
                       <>
@@ -208,7 +235,7 @@ const ViewTemplate = () => {
                                   item.coverImage
                                     ? `${IMAGE_BASE_URL + item.coverImage}`
                                     : process.env.PUBLIC_URL +
-                                      "/Images/Untitled.png"
+                                    "/Images/Untitled.png"
                                 }
                                 alt=""
                               />

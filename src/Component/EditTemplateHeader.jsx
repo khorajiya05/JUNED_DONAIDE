@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 // import Communitylogo from "../Assests/Images/community-logo.svg";
 import logo from "../Assests/Images/Combo-logo.png";
 
@@ -15,23 +15,25 @@ export const Editabletemplateheader = ({
   showPub = false,
   showS = false,
 }) => {
-  let dispatch = useDispatch();
-  const allReducers = useSelector((state) => state.openEditorReducer);
-  const [sideDomain,setSideDomain] = useState(null)
 
-  let siteID = localStorage.getItem("siteIDs");
-  // let getSiteID =localStorage.getItem("communityID")
-  const search = useLocation().search;
+  const location = useLocation();
+  let dispatch = useDispatch();
+
+  const {search} =  location 
   const getSiteID = new URLSearchParams(search).get("id");
 
-    siteID = getSiteID !== null ?  getSiteID : siteID;
+  const allReducers = useSelector((state) => state.openEditorReducer);
+  const [sideDomain, setSideDomain] = useState(null)
+
+  let siteID = localStorage.getItem("siteIDs");
+  siteID = getSiteID !== null ? getSiteID : siteID;
 
   const sendEmail = () => {
 
     const emailDetails = {
       To: localStorage.getItem("email"),
       Type: "Published",
-      Url:`https://donaide-prod-web.azurewebsites.net/${sideDomain}`
+      Url: `https://donaide-evmt-stage-web.azurewebsites.net/${sideDomain}`
 
     }
     UserService.sendEmail(emailDetails)
@@ -61,7 +63,7 @@ export const Editabletemplateheader = ({
           <img src={logo} width={140} alt="logo" />
         </Link>
         <ul className="navbar-nav adm-header-nav ms-auto ">
-        
+
           {!allReducers.openPreviewEditCompStatus ? (
             <>
               <li className="nav-item template-header-edit-btn">
@@ -93,7 +95,7 @@ export const Editabletemplateheader = ({
                   to="/communities"
                   className="skip-template-btn"
                   showP={false}
-     
+
                 >
                   Dashboard
                 </Link>
@@ -110,10 +112,10 @@ export const Editabletemplateheader = ({
               </li>
             </>
           )}
-      
+
           <li className="nav-item template-header-edit-btn">
             <Link
-              to="/setting-progress"
+              to={`/setting-progress?id=${siteID}`}
               className="edit-template-btn"
               showPub={false}
               onClick={sendEmail}

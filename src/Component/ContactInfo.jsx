@@ -6,7 +6,7 @@ import validator from "validator";
 import Payment from "../Component/Payment";
 import Congratulation from "../Component/Congratulation";
 import Header from "../Component/Header";
-import { Link, useNavigate as history } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { Tooltip } from "react-bootstrap";
 import { OverlayTrigger } from "react-bootstrap";
@@ -250,13 +250,13 @@ export default class AddContactInfo extends Component {
       !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.state.email)
     ) {
       errors["email"] = "Please enter valid email-id like(test@gmail.com)";
-    } 
+    }
     // else if (
     //   afterDotStrLen > 1
     // ) {
     //   errors["email"] = "Please enter valid email-id like(test@gmail.com)";
     // }
-     else if (!this.validateEmail(this.state.email)) {
+    else if (!this.validateEmail(this.state.email)) {
       errors["email"] = "This email is already used.";
     } else if (this.state.isprivacypolicy === false) {
       errors["privacypolicy"] = "Please check privacy & policy checkbox.";
@@ -588,7 +588,7 @@ export default class AddContactInfo extends Component {
     UserService.profileCreate(createprofiledata)
       .then((userResponse) => {
         this.setState({
-          userID: userResponse.data.userID,
+          userID: userResponse.data?.userId,
           firstname: userResponse.data.firstname,
           lastname: userResponse.data.lastname,
           phone: userResponse.data.phone,
@@ -636,7 +636,7 @@ export default class AddContactInfo extends Component {
 
     CommunityService.communitySiteSetUp(createcommunitydata)
       .then((communityResponse) => {
-        this.setState({ setSiteID: communityResponse.data.dat });
+        this.setState({ setSiteID: communityResponse.data.data });
 
         localStorage.setItem("siteIDs", communityResponse.data.data);
         this.getCommuniSiteDetailsBySiteID(communityResponse.data.data)
@@ -670,11 +670,11 @@ export default class AddContactInfo extends Component {
   sendEmail() {
     let error = {};
     const emailName = this.state.firstname;
-    const loginurl = "https://donaide-prod-web.azurewebsites.net/login";
+    const loginurl = "https://donaide-evmt-stage-web.azurewebsites.net/login";
     const emailDetails = {
       To: this.state.email,
       Name: this.state.firstname,
-      Url: "https://donaide-prod-web.azurewebsites.net/login",
+      Url: "https://donaide-evmt-stage-web.azurewebsites.net/login",
       Type: "Welcome",
     };
 
@@ -713,11 +713,11 @@ export default class AddContactInfo extends Component {
       });
   }
 
-  passwordHideShow(type){
-    if(type === "password"){
-      this.setState({passwordHideShow:!this.state.passwordHideShow})
-    }else{
-      this.setState({confirmPasswordHideShow:!this.state.confirmPasswordHideShow})
+  passwordHideShow(type) {
+    if (type === "password") {
+      this.setState({ passwordHideShow: !this.state.passwordHideShow })
+    } else {
+      this.setState({ confirmPasswordHideShow: !this.state.confirmPasswordHideShow })
     }
   }
 
@@ -862,7 +862,7 @@ export default class AddContactInfo extends Component {
                             <div className="form-group field-set-form">
                               <div className="form-group create-password-cstm mb-3">
                                 <input
-                                  type={this.state.passwordHideShow ?  "text" : "password"}
+                                  type={this.state.passwordHideShow ? "text" : "password"}
                                   data-toggle="tooltip"
                                   data-placement="right"
                                   title="Please Enter Valid Password
@@ -888,13 +888,13 @@ export default class AddContactInfo extends Component {
                                     </Tooltip>
                                   }
                                 >
-                                  {/* <i class="fa fa-eye" aria-hidden="true"></i> */}
+                                  {/* <i className="fa fa-eye" aria-hidden="true"></i> */}
                                   {
                                     this.state.passwordHideShow
                                       ?
-                                      <i class="fa fa-eye" aria-hidden="true" onClick={() => this.passwordHideShow("password")}></i>
+                                      <i className="fa fa-eye" aria-hidden="true" onClick={() => this.passwordHideShow("password")}></i>
                                       :
-                                      <i class="fa fa-eye-slash" aria-hidden="true" onClick={() => this.passwordHideShow("password")}></i>
+                                      <i className="fa fa-eye-slash" aria-hidden="true" onClick={() => this.passwordHideShow("password")}></i>
                                   }
                                   {/* <i className="fa fa-info-circle"></i> */}
 
@@ -905,7 +905,7 @@ export default class AddContactInfo extends Component {
                               </div>
                               <div className="form-group create-password-cstm mb-3">
                                 <input
-                                  type={this.state.confirmPasswordHideShow ?  "text" : "password"}
+                                  type={this.state.confirmPasswordHideShow ? "text" : "password"}
                                   data-toggle="tooltip"
                                   data-placement="right"
                                   title="Confirm Password should be same as Password"
@@ -930,9 +930,9 @@ export default class AddContactInfo extends Component {
                                   {
                                     this.state.confirmPasswordHideShow
                                       ?
-                                      <i class="fa fa-eye" aria-hidden="true" onClick={() => this.passwordHideShow("confirmPassword")}></i>
+                                      <i className="fa fa-eye" aria-hidden="true" onClick={() => this.passwordHideShow("confirmPassword")}></i>
                                       :
-                                      <i class="fa fa-eye-slash" aria-hidden="true" onClick={() => this.passwordHideShow("confirmPassword")}></i>
+                                      <i className="fa fa-eye-slash" aria-hidden="true" onClick={() => this.passwordHideShow("confirmPassword")}></i>
                                   }
                                 </OverlayTrigger>
                                 <span style={{ color: "red" }}>
@@ -1212,9 +1212,10 @@ export default class AddContactInfo extends Component {
           </main>
         ) : this.state.isCongratulation === true &&
           this.state.isPayment === false ? (
-          <Congratulation />
+          <Congratulation CommunityData={this.state.CommunityData} />
         ) : (
           <Payment
+            userID={this.state.userID}
             email={this.state.email}
             firstname={this.state.firstname}
             currency="USD"

@@ -1,28 +1,22 @@
-import React, { useState } from "react";
-import { AdminHeader } from "./admin-header";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useState } from "react";
 import { useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { confirmAlert } from "react-confirm-alert";
+
+import { AdminHeader } from "./admin-header";
 import CommunityService from "../Services/CommunityService";
 import MemberShipService from "../Services/MemberShipService";
-// import SideBar from "../Component/SideBar/index";
 import CreateCommunityAdmin from "./CreateCommunityAdmin";
 import { getRoleAndPermissionListByID } from "../ReduxStore/Actions/roleAndPermissionAction";
-import { confirmAlert } from "react-confirm-alert";
-import {
-  NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
 import { IMAGE_BASE_URL } from "../Config";
+import { errorToast, successToast, warningToast } from "./toast/toast";
 
 const TemplateDashboard = () => {
-
-  const { roleID, profileId } = useSelector((state) => state?.profileData?.profileData)
-
+  const { RoleID, UserID } = useSelector((state) => state?.auth?.loginData);
   const [isLoader, setIsLoader] = useState(false);
   const [Leftside, setLeftside] = useState(true);
   const [showModal, setShowMmodal] = useState(false);
-  const [sideDomain, setSideDomain] = useState(null);
 
   const [userCommunity, setUserCommunity] = useState([]);
   const [membershipData, setMembershipData] = useState([]);
@@ -36,16 +30,15 @@ const TemplateDashboard = () => {
   });
 
   const navigate = useNavigate();
-
-  const permission = useSelector(
-    (state) => state.roleAndPermision.data.payload
-  );
   const dispatch = useDispatch();
-  const search = useLocation().search;
+  const location = useLocation();
+
+  const { search } = location;
+  const permission = useSelector((state) => state.roleAndPermision.data);
 
   const userID = new URLSearchParams(search).get("ownerAdminId")
     ? new URLSearchParams(search).get("ownerAdminId")
-    : profileId;
+    : UserID;
   const openModal = () => {
     setShowMmodal(true);
   };
@@ -106,24 +99,23 @@ const TemplateDashboard = () => {
 
   //Delete Community 
   let DeleteCommunityModal = (siteID) => {
-    debugger
     confirmAlert({
       title: "Confirm to submit",
-      message: "Are you sure to do this.",
+      message: "Are you sure to delete this site.",
       buttons: [
         {
           label: "Yes",
           onClick: () => {
-            debugger
             CommunityService.DeleteCommuinty(siteID)
               .then((response) => {
                 if (response.data.status === "SUCCESS") {
-                  NotificationManager.success("Community delete successfully!");
-                  getUserCommunityByUserID()
-                  // setRenderComp(renderComp + 1);
+                  successToast("Community delete successfully!");
+                  getUserCommunityByUserID();
+                  getrUserCommunityCount();
                 }
               })
               .catch((e) => {
+                errorToast("Something went wrong");
                 console.log(e);
               });
           },
@@ -142,7 +134,7 @@ const TemplateDashboard = () => {
   }, [userCommunity?.communityId]);
 
   useEffect(() => {
-    if (roleID == 2) {
+    if (RoleID == 2) {
       getCommunityPlanValidUser();
     }
 
@@ -151,7 +143,7 @@ const TemplateDashboard = () => {
 
   useEffect(() => {
     getrUserCommunityCount();
-    dispatch(getRoleAndPermissionListByID(userID, roleID));
+    dispatch(getRoleAndPermissionListByID(userID, RoleID));
   }, []);
 
   let updatePublicSideStatus = async (data, type) => {
@@ -183,8 +175,7 @@ const TemplateDashboard = () => {
           closeModal={closeModal}
           openModal={openModal}
           userCommunity={userCommunity}
-
-
+          roleID={RoleID}
         />
       )}
       <AdminHeader Sidebar={Data} />
@@ -192,24 +183,19 @@ const TemplateDashboard = () => {
         <div className="main-outer-container">
           <div className="dashboard-outer-container">
             <div className="inner-container-template m-0">
-              <div
-                className={
-                  Leftside
-                    ? "dashboard-container "
-                    : "dashboard-container active"
-                }
-              >
-                {/* <SideBar  /> */}
-
+              <div className={Leftside ? "dashboard-container " : "dashboard-container active"}>
                 <div className="right-sidebar ">
                   <div className="container-fluid">
                     <div className="inner-content-height">
                       <div className="admin-group-page pb-0">
                         <div className="admin-group-page adm-group-heading  ">
                           <div className="heading-main">
-                            <h3 style={{ display: "flex" }}>Communities</h3>
+                            <h3>
+                              <Link to="/admin-tools"><i className="fa fa-long-arrow-left me-2" aria-hidden="true" ></i></Link>
+                              Communities
+                            </h3>
                           </div>
-                          {roleID == 2 && (
+                          {Number(RoleID) === Number(2) && (
                             <div className="button-UI">
                               <Link
                                 to="/upgrade-plan"
@@ -217,15 +203,11 @@ const TemplateDashboard = () => {
                               >
                                 Upgrade Plan
                               </Link>
-
-                              {totalCommunityCount.AllCommunityCount !==
-                                totalCommunityCount.CreatedCommunity ? (
+                              {totalCommunityCount.AllCommunityCount >= totalCommunityCount.CreatedCommunity ? (
                                 permission &&
                                 permission.length > 0 &&
-                                permission.filter(
-                                  (e) =>
-                                    e.permissionName === "Create Community Site"
-                                ).length > 0 && (
+                                permission.filter((e) => e.permissionName === "Create Community Site").length > 0 &&
+                                (
                                   <Link
                                     to="/create-community"
                                     className="btn tmplt-btn Btn-fill"
@@ -237,65 +219,43 @@ const TemplateDashboard = () => {
                                     Create New Site
                                   </Link>
                                 )
-
                               ) : (
                                 <>
-
                                   <Link
                                     to="/communities"
                                     className="btn tmplt-btn Btn-fill"
-                                    onClick={() =>
-                                      alert("Please upgrade your plan.")
-                                    }
+                                    onClick={() => {
+                                      alert("Please upgrade your plan.");
+                                      warningToast("Please upgrade your plan.");
+                                    }}
                                   >
-                                    <i
-                                      className="fa fa-plus me-2"
-                                      aria-hidden="true"
-                                    ></i>
+                                    <i className="fa fa-plus me-2" aria-hidden="true" ></i>
                                     Create New Site
                                   </Link></>
                               )}
-
-                              {roleID !== null &&
-                                roleID !== 3 && (
-                                  <>
-
-                                    <Link
-                                      to=""
-                                      className="btn tmplt-btn Btn-fill"
-                                      onClick={openModal}
-                                    >
-                                      <i
-                                        className="fa fa-plus me-2"
-                                        aria-hidden="true"
-                                      ></i>  create community Admin
-                                    </Link></>
-                                )}
+                              {RoleID !== null && RoleID !== 3 && (
+                                <>
+                                  <Link to="" className="btn tmplt-btn Btn-fill" onClick={openModal}>
+                                    <i className="fa fa-plus me-2" aria-hidden="true" ></i>
+                                    create community Admin
+                                  </Link>
+                                </>
+                              )}
                             </div>
                           )}
                         </div>
-
                         <div className="all-sites-template-container">
                           <div className="sites-template-container-box row mobile-aligned-start">
                             <div className="community-title">
-                              {roleID == 2 ? (
-                                <p>
-                                  You Created{" "}
-                                  {totalCommunityCount.CreatedCommunity} site
-                                  and{" "}
-                                  {parseInt(
-                                    totalCommunityCount.AllCommunityCount
-                                  ) -
-                                    parseInt(
-                                      totalCommunityCount.CreatedCommunity
-                                    )}{" "}
+                              {Number(RoleID) === Number(2) ? (
+                                <p>You Created {totalCommunityCount.CreatedCommunity} site and
+                                  {(parseInt(totalCommunityCount.AllCommunityCount) - parseInt(totalCommunityCount.CreatedCommunity)) >= 0 ? (parseInt(totalCommunityCount.AllCommunityCount) - parseInt(totalCommunityCount.CreatedCommunity)) : 0}
                                   site left
                                 </p>
                               ) : (
-                                roleID !== 1 && <p>Communities</p>
+                                RoleID !== 1 && <p>Communities</p>
                               )}
                             </div>
-
                             {userCommunity && userCommunity.length > 0 ? (
                               userCommunity.map((data) => (
                                 <div
@@ -314,14 +274,10 @@ const TemplateDashboard = () => {
                                       />
 
                                       <div className="edit-site-tmplt">
-                                        {roleID == 2 ? (
+                                        {Number(RoleID) === Number(2) ? (
                                           <Link
-                                            to={
-                                              "/edit/" +
-                                              data.communitySiteName +
-                                              "?id=" +
-                                              data.communityId
-                                            }
+                                            to={"/edit/" + data.communitySiteName + "?id=" + data.communityId}
+                                            // to={"/editSite/" + data.communityId}
                                             className="btn  me-2"
                                           >
                                             <i className="fa fa-pencil me-2"></i>
@@ -339,16 +295,12 @@ const TemplateDashboard = () => {
                                           </Link>
                                         )}
                                       </div>
-
-
-
                                     </div>
-
                                     <div className="site-template-card-publish">
                                       <div className="site-template-card-name ">
                                         <h5>{data.communitySiteName}</h5>
                                         <p className="m-0">
-                                          {" "}
+
                                           <Link
                                             to={`/${data.communityDomain}`}
                                           >
@@ -400,7 +352,6 @@ const TemplateDashboard = () => {
                       </div>
                     </div>
                   </div>
-
                   <div className="tmplt-footer mb-0">
                     <p className="m-0">
                       Copyright © 2022 Donaide. All rights reserved.
@@ -412,7 +363,6 @@ const TemplateDashboard = () => {
           </div>
         </div>
       </main>
-      <NotificationContainer />
     </div>
   );
 };

@@ -8,15 +8,19 @@ import {
   NotificationContainer,
   NotificationManager,
 } from "react-notifications";
+import { useSelector } from "react-redux";
+import { IMAGE_BASE_URL } from "../../Config";
 
 const EventDetails = () => {
+
+  const { UserID } = useSelector((state) => state?.auth?.loginData);
+
   const [Leftside, setLeftside] = useState(true);
   const [loader, setLoader] = useState(false);
   const [eventdetails, setEventDetails] = useState({});
   const [confirmId, setConfirmID] = useState({});
   const search = useLocation().search;
   const eventId = new URLSearchParams(search).get("eventId");
-  const userID = localStorage.getItem("userID");
   function Data() {
     setLeftside(!Leftside);
   }
@@ -30,7 +34,7 @@ const EventDetails = () => {
   };
   const GetEventdetailByUserIdAndEventId = async () => {
     const res = await GroupService.GetEventdetailByUserIdAndEventId(
-      userID,
+      UserID,
       eventId
     );
     setConfirmID(res.data);
@@ -41,7 +45,7 @@ const EventDetails = () => {
       eventId: eventId,
       communityId: eventdetails.siteID,
       groupId: eventdetails.groupID,
-      userId: localStorage.getItem("userID"),
+      UserID,
       going: going,
       cantGo: cantGo,
       mayBe: mayBe,
@@ -62,8 +66,6 @@ const EventDetails = () => {
     GetEventdetailByUserIdAndEventId();
   }, []);
 
-
-
   return (
     <div>
       <AdminHeader Sidebar={Data} />
@@ -79,7 +81,6 @@ const EventDetails = () => {
                 }
               >
                 <SideBar />
-
                 <div className="right-sidebar">
                   <div className="inner-content-height">
                     <div className="admin-tools-menu">
@@ -94,9 +95,9 @@ const EventDetails = () => {
                                 <h4>Event Details</h4>
                               </div>
                               <div className="event-container">{
-                                loader?<div className="spinner-container">
-                                <div className="loading-spinner"></div>
-                              </div>:<div className="event-area-info p-4">
+                                loader ? <div className="spinner-container">
+                                  <div className="loading-spinner"></div>
+                                </div> : <div className="event-area-info p-4">
                                   <div className="date-event">
                                     {
                                       moment(eventdetails.startDate)
@@ -105,63 +106,51 @@ const EventDetails = () => {
                                         .split("-")[0]
                                     }
                                   </div>
-                                    <div className="row">
-                                        <div className="col-md-12">
-                                        <div className="evn-name mt-3">
+                                  <div className="row">
+                                    <div className="col-md-12">
+                                      <div className="evn-name mt-3">
                                         <h3>
                                           {eventdetails.eventName
                                             ? eventdetails.eventName.toUpperCase()
                                             : ""}
                                         </h3>
                                       </div>
-                                        </div>
                                     </div>
+                                  </div>
                                   <div className="row main-event-design">
                                     <div className="col-md-12">
-                                     
                                       <div className="evn-date mt-3">
                                         <div className="event-info-main">
-                                        <span className="upcomming-event">
-                                        {` Start Date : ${
-                                            eventdetails &&
-                                            moment(eventdetails.startDate)
-                                              .utc()
-                                              .format("DD-MM-YYYY") +
+                                          <span className="upcomming-event">
+                                            {` Start Date : ${eventdetails &&
+                                              moment(eventdetails.startDate)
+                                                .utc()
+                                                .format("DD-MM-YYYY") +
                                               eventdetails.startTime
-                                          }`}
+                                              }`}
                                           </span>
                                           <span className="upcomming-event">
-                                          {` End Date : ${
-                                            eventdetails &&
-                                            moment(eventdetails.endDate)
-                                              .utc()
-                                              .format("DD-MM-YYYY") +
+                                            {` End Date : ${eventdetails &&
+                                              moment(eventdetails.endDate)
+                                                .utc()
+                                                .format("DD-MM-YYYY") +
                                               eventdetails.endTime
-                                          }`}
-                                             </span>
+                                              }`}
+                                          </span>
                                         </div>
                                         <div className=" Location-address">
-                                      
-                                      <h6>{eventdetails.address}</h6>
+                                          <h6>{eventdetails.address}</h6>
+                                        </div>
                                       </div>
-                                      </div>
-                                     
                                     </div>
-                                    </div>
-                                    
-
+                                  </div>
                                   <div className="eve-user mt-3">
                                     <div className="row align-items-center">
                                       <div className="col-md-4">
                                         <div className="eve-user-name d-flex align-items-center">
                                           <div className="me-3">
                                             <img
-                                              src={
-                                                eventdetails.profilePicture
-                                                  ? eventdetails.profilePicture
-                                                  : process.env.PUBLIC_URL +
-                                                    "/Images/guest-user.jpg"
-                                              }
+                                              src={eventdetails.profilePicture ? (IMAGE_BASE_URL + eventdetails.profilePicture) : process.env.PUBLIC_URL + "/Images/guest-user.jpg"}
                                               width="40"
                                               height="40"
                                               className="rounded-circle"
@@ -238,7 +227,7 @@ const EventDetails = () => {
                                   </div>
                                 </div>
                               }
-                                
+
                               </div>
                             </div>
                           </div>

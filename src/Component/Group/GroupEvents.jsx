@@ -4,7 +4,7 @@ import GroupService from "../../Services/GroupService";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router";
 import moment from "moment";
-import {IMAGE_BASE_URL} from '../../Config'
+import { IMAGE_BASE_URL } from '../../Config'
 const GroupEvents = (props) => {
 
 
@@ -77,18 +77,18 @@ const GroupEvents = (props) => {
           <div className="event-card  card-group-col custom-event">
             <div className="event-title">
               <h4>Upcoming events</h4>
-            
+
               <div>
                 <div className="invite-remove-group-list-btn ms-auto">
                   <button
                     onClick={OpenModal}
                     type="button"
                     className="text-decoration-none post"
-                    // className="post"
+                  // className="post"
                   >
                     <i className="fa fa-plus me-2" aria-hidden="true"></i>
                     Create Event
-                    
+
                   </button>
                 </div>
               </div>
@@ -96,19 +96,19 @@ const GroupEvents = (props) => {
 
             <div className="event-card-body">
               {upComingEvents !== undefined && upComingEvents.length > 0 ? (
-                upComingEvents.map((events) => (
+                upComingEvents.map((events, index) => (
                   <div
                     className="row mb-3 event-section  "
                     onClick={() => showEventDetials(events.eventID)}
+                    key={index}
                   >
                     <div className="col-md-3">
-                  
                       <img
                         src={
                           events.coverImage
-                            ? `${IMAGE_BASE_URL+events.coverImage}`
+                            ? `${IMAGE_BASE_URL + events.coverImage}`
                             : process.env.PUBLIC_URL +
-                              " /Images/group_cover_img.jpg "
+                            " /Images/group_cover_img.jpg "
                         }
                         className="img-fluid"
                         alt=""
@@ -118,26 +118,22 @@ const GroupEvents = (props) => {
                       <div className="event-info">
                         <h4>{events.eventName.toUpperCase()}</h4>
                         <div className="event-info-main">
-                        <span className="upcomming-event">
-                          <b>Start Date :</b>{" "}
-                          {moment(events.startDate).format("YYYY-MM-DD")}{" "}
-                          {events.startTime}
-                        </span>
-                   
-                        <span className="upcomming-event">
-                          <b>End Date :</b>
-                          {moment(events.endDate).format("YYYY-MM-DD")}{" "}
-                          {events.endTime}
-                        </span>
-</div>
+                          <span className="upcomming-event">
+                            <b>Start Date :</b>{" "}
+                            {moment(events.startDate).format("YYYY-MM-DD")}{" "}
+                            {events.startTime}
+                          </span>
+
+                          <span className="upcomming-event">
+                            <b>End Date :</b>
+                            {moment(events.endDate).format("YYYY-MM-DD")}{" "}
+                            {events.endTime}
+                          </span>
+                        </div>
                         <div className="cre-event">
                           <img
                             alt=""
-                            src={
-                              events.profilePicture
-                                ? events.profilePicture
-                                : `${process.env.PUBLIC_URL}Images/guest-user.jpg`
-                            }
+                            src={events.profilePicture ? (IMAGE_BASE_URL + events.profilePicture) : `${process.env.PUBLIC_URL}Images/guest-user.jpg`}
                           />
                           <p>
                             Created by <strong>{events.userName}</strong>
@@ -168,15 +164,15 @@ const GroupEvents = (props) => {
 
             <div className="event-card-body">
               {outGoingEvents !== undefined && outGoingEvents.length > 0 ? (
-                outGoingEvents.map((events) => (
-                  <div className="row mb-3">
+                outGoingEvents.map((events, index) => (
+                  <div className="row mb-3" key={index}>
                     <div className="col-md-3">
                       <img
                         src={
                           events.coverImage
-                            ? `${IMAGE_BASE_URL+events.coverImage}`
+                            ? `${IMAGE_BASE_URL + events.coverImage}`
                             : process.env.PUBLIC_URL +
-                              " /Images/group_cover_img.jpg "
+                            " /Images/group_cover_img.jpg "
                         }
                         className="img-fluid"
                         alt=""
@@ -186,17 +182,17 @@ const GroupEvents = (props) => {
                       <div className="event-info evn-date">
                         <h4>{events.eventName.toUpperCase()}</h4>
                         <div className="event-info-main">
-                        <span className="past-event">
-                          <b>Start Date :</b>{" "}
-                          {moment(events.startDate).format("YYYY-MM-DD")}{" "}
-                          {events.startTime}
-                        </span>
-                       
-                        <span className="past-event">
-                          <b>End Date :</b>
-                          {moment(events.endDate).format("YYYY-MM-DD")}{" "}
-                          {events.endTime}
-                        </span>
+                          <span className="past-event">
+                            <b>Start Date :</b>{" "}
+                            {moment(events.startDate).format("YYYY-MM-DD")}{" "}
+                            {events.startTime}
+                          </span>
+
+                          <span className="past-event">
+                            <b>End Date :</b>
+                            {moment(events.endDate).format("YYYY-MM-DD")}{" "}
+                            {events.endTime}
+                          </span>
                         </div>
                         <div className="cre-event">
                           <img
@@ -204,7 +200,7 @@ const GroupEvents = (props) => {
                               events.profilePicture
                                 ? events.profilePicture
                                 : process.env.PUBLIC_URL +
-                                  "/Images/guest-user.jpg"
+                                "/Images/guest-user.jpg"
                             }
                             alt=""
                           />

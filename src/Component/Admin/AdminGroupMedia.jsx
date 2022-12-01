@@ -4,12 +4,16 @@ import { AdminHeader } from "../admin-header";
 import GroupService from "../../Services/GroupService";
 import ReactPlayer from "react-player";
 import { Link } from "react-router-dom";
-import {IMAGE_BASE_URL} from '../../Config'
+import { IMAGE_BASE_URL } from '../../Config'
+import { useSelector } from "react-redux";
 const AdminGroupMedia = () => {
+
+  const { UserID } = useSelector((state) => state.auth?.loginData);
+
   const [Leftside, setLeftside] = useState(true);
-  const roleID = localStorage.getItem("roleID");
+  // const roleID = localStorage.getItem("roleID");
   const [loader, setLoader] = useState(false);
-  const userID = localStorage.getItem("userID");
+  // const userID = localStorage.getItem("userID");
   const [media, setMedia] = useState([]);
 
   function Data() {
@@ -18,7 +22,7 @@ const AdminGroupMedia = () => {
   const getCommunityGroupsWithCommunityDetails = async () => {
     setLoader(true);
     const res = await GroupService.getCommunityGroupsWithCommunityDetails(
-      userID
+      UserID
     );
     setMedia(res.data);
     setLoader(false);
@@ -64,12 +68,12 @@ const AdminGroupMedia = () => {
                             <div className="group-tab-nav ">
                               <nav className="custom-nav-tab">
                                 <div
-                                  class="nav nav-tabs"
+                                  className="nav nav-tabs"
                                   id="nav-tab"
                                   role="tablist"
                                 >
                                   <button
-                                    class="nav-link active"
+                                    className="nav-link active"
                                     id="nav-home-tab"
                                     data-bs-toggle="tab"
                                     data-bs-target="#Photos"
@@ -81,7 +85,7 @@ const AdminGroupMedia = () => {
                                     Photos
                                   </button>
                                   <button
-                                    class="nav-link"
+                                    className="nav-link"
                                     id="nav-profile-tab"
                                     data-bs-toggle="tab"
                                     data-bs-target="#Videos"
@@ -93,7 +97,7 @@ const AdminGroupMedia = () => {
                                     Videos
                                   </button>
                                   <button
-                                    class="nav-link"
+                                    className="nav-link"
                                     id="nav-profile-tab"
                                     data-bs-toggle="tab"
                                     data-bs-target="#Doc"
@@ -107,9 +111,9 @@ const AdminGroupMedia = () => {
                                 </div>
                               </nav>
 
-                              <div class="tab-content mt-3 ">
+                              <div className="tab-content mt-3 ">
                                 <div
-                                  class="tab-pane fade active show"
+                                  className="tab-pane fade active show"
                                   id="Photos"
                                   role="tabpanel"
                                   aria-labelledby="nav-home-tab"
@@ -120,45 +124,44 @@ const AdminGroupMedia = () => {
                                         (item) =>
                                           item.groupList &&
                                           item.groupList.length > 0 &&
-                                          item.groupList.map((data) => (
-                                            <div className="group-main-container">
+                                          item.groupList.map((data, index) => (
+                                            <div className="group-main-container" key={index}>
                                               <div className="card-group-col ">
                                                 <h3 className="grou-name-heading">{data.groupName}</h3>
                                                 <div className="ui-design-gallery">
-                                                <div className="row justify-content-start ">
-                                                  {data.groupMeadiaList &&
-                                                  data.groupMeadiaList.length >
-                                                    0 ? (
-                                                    data.groupMeadiaList.map(
-                                                      (gmedia, index) =>
-                                                      
-                                                      gmedia.fileType && gmedia.fileType === "Image" &&(
-                                                          <div
-                                                            className="col-xl-2 col-lg-4 col-md-4 col-sm-4 col-12 mb-3"
-                                                            key={index}
-                                                          >
-                                       
-                                                            <div className="group-img">
-                                                            <img
-                                                              src={
-                                                                gmedia.postImageOrVedioName
-                                                                  ? `${IMAGE_BASE_URL+gmedia.postImageOrVedioName}`
-                                                                  : ""
-                                                              }
-                                                              alt=""
-                                                              className="img-fluid"
-                                                            />
-                                                            </div>
+                                                  <div className="row justify-content-start ">
+                                                    {data.groupMeadiaList &&
+                                                      data.groupMeadiaList.length >
+                                                      0 ? (
+                                                      data.groupMeadiaList.map(
+                                                        (gmedia, index) =>
+                                                          gmedia.fileType && gmedia.fileType === "Image" && (
+                                                            <div
+                                                              className="col-xl-2 col-lg-4 col-md-4 col-sm-4 col-12 mb-3"
+                                                              key={index}
+                                                            >
 
-                                                          </div>
-                                                        )
-                                                    )
-                                                  ) : (
-                                                    <div className="no-record-found">
-                                                      <h4> No Record Found </h4>
-                                                    </div>
-                                                  )}
-                                                </div>
+                                                              <div className="group-img">
+                                                                <img
+                                                                  src={
+                                                                    gmedia.postImageOrVedioName
+                                                                      ? `${IMAGE_BASE_URL + gmedia.postImageOrVedioName}`
+                                                                      : ""
+                                                                  }
+                                                                  alt=""
+                                                                  className="img-fluid"
+                                                                />
+                                                              </div>
+
+                                                            </div>
+                                                          )
+                                                      )
+                                                    ) : (
+                                                      <div className="no-record-found">
+                                                        <h4> No Record Found </h4>
+                                                      </div>
+                                                    )}
+                                                  </div>
                                                 </div>
                                               </div>
                                             </div>
@@ -176,7 +179,7 @@ const AdminGroupMedia = () => {
                                   </div>
                                 </div>
                                 <div
-                                  class="tab-pane fade"
+                                  className="tab-pane fade"
                                   id="Videos"
                                   role="tabpanel"
                                   aria-labelledby="nav-home-tab"
@@ -187,46 +190,46 @@ const AdminGroupMedia = () => {
                                         (item) =>
                                           item.groupList &&
                                           item.groupList.length > 0 &&
-                                          item.groupList.map((data) => (
-                                            <div className="group-main-container">
+                                          item.groupList.map((data, index) => (
+                                            <div className="group-main-container" key={index}>
                                               <div className="card-group-col ">
                                                 <h3 className="grou-name-heading">{data.groupName}</h3>
                                                 <div className="ui-design-gallery">
-                                                <div className="row justify-content-start">
-                                                  {data.groupMeadiaList &&
-                                                  data.groupMeadiaList.length >
-                                                    0 ? (
-                                                    data.groupMeadiaList.map(
-                                                      (gmedia, index) =>
-                                                        
-                                                      gmedia.fileType && gmedia.fileType === "Vedio" &&(
-                                                          <div
-                                                            className="col-xl-2 col-lg-4 col-md-4 col-sm-4 col-12 mb-3"
-                                                            key={index}
-                                                          >
+                                                  <div className="row justify-content-start">
+                                                    {data.groupMeadiaList &&
+                                                      data.groupMeadiaList.length >
+                                                      0 ? (
+                                                      data.groupMeadiaList.map(
+                                                        (gmedia, index) =>
 
-                                                            <div className="video-play">
-                                                            <ReactPlayer
-                                                              className="react-player"
-                                                              url={
-                                                                gmedia.postImageOrVedioName
-                                                                  ? `${IMAGE_BASE_URL+gmedia.postImageOrVedioName}`
-                                                                  : ""
-                                                              }
-                                                              width="100%"
-                                                              height="100%"
-                                                              controls={true}
-                                                            />
+                                                          gmedia.fileType && gmedia.fileType === "Vedio" && (
+                                                            <div
+                                                              className="col-xl-2 col-lg-4 col-md-4 col-sm-4 col-12 mb-3"
+                                                              key={index}
+                                                            >
+
+                                                              <div className="video-play">
+                                                                <ReactPlayer
+                                                                  className="react-player"
+                                                                  url={
+                                                                    gmedia.postImageOrVedioName
+                                                                      ? `${IMAGE_BASE_URL + gmedia.postImageOrVedioName}`
+                                                                      : ""
+                                                                  }
+                                                                  width="100%"
+                                                                  height="100%"
+                                                                  controls={true}
+                                                                />
+                                                              </div>
                                                             </div>
-                                                          </div>
-                                                        )
-                                                    )
-                                                  ) : (
-                                                    <div className="spinner-container">
-                                                      <h5> No Record Found</h5>
-                                                    </div>
-                                                  )}
-                                                </div>
+                                                          )
+                                                      )
+                                                    ) : (
+                                                      <div className="spinner-container">
+                                                        <h5> No Record Found</h5>
+                                                      </div>
+                                                    )}
+                                                  </div>
                                                 </div>
                                               </div>
                                             </div>
@@ -245,7 +248,7 @@ const AdminGroupMedia = () => {
                                 </div>
 
                                 <div
-                                  class="tab-pane fade"
+                                  className="tab-pane fade"
                                   id="Doc"
                                   role="tabpanel"
                                   aria-labelledby="nav-home-tab"
@@ -256,41 +259,39 @@ const AdminGroupMedia = () => {
                                         (item) =>
                                           item.groupList &&
                                           item.groupList.length > 0 &&
-                                          item.groupList.map((data) => (
-                                            <div className="group-main-container">
+                                          item.groupList.map((data, index) => (
+                                            <div className="group-main-container" key={index}>
                                               <div className="card-group-col ">
                                                 <h3 className="grou-name-heading">{data.groupName}</h3>
-                                            <div className="ui-design-gallery">
-                                                <div className="row justify-content-start">
-                                                  {data.groupMeadiaList &&
-                                                  data.groupMeadiaList.length >
-                                                    0 ? (
-                                                    data.groupMeadiaList.map(
-                                                      (gmedia, index) =>
-
-
-                                                        gmedia.fileType &&
-                                                        gmedia.fileType ===
-                                                          "Document" &&(
+                                                <div className="ui-design-gallery">
+                                                  <div className="row justify-content-start">
+                                                    {data.groupMeadiaList &&
+                                                      data.groupMeadiaList.length >
+                                                      0 ? (
+                                                      data.groupMeadiaList.map(
+                                                        (gmedia, index) =>
+                                                          gmedia.fileType &&
+                                                          gmedia.fileType ===
+                                                          "Document" && (
                                                             <div
                                                               className="col-xl-2 col-lg-4 col-md-4 col-sm-4 col-12 mb-3"
                                                               key={index}
                                                             >
                                                               {gmedia.fileName &&
-                                                              gmedia.fileName.split(
-                                                                "."
-                                                              )[1] === "pdf" ? (
+                                                                gmedia.fileName.split(
+                                                                  "."
+                                                                )[1] === "pdf" ? (
                                                                 <>
                                                                   <div className="docfile">
                                                                     <i
-                                                                      class="fa fa-file-pdf-o doc-icon"
+                                                                      className="fa fa-file-pdf-o doc-icon"
                                                                       aria-hidden="true"
                                                                     ></i>
 
                                                                     <p>
                                                                       <a
                                                                         href={
-                                                                          `${IMAGE_BASE_URL+gmedia.postImageOrVedioName}`
+                                                                          `${IMAGE_BASE_URL + gmedia.postImageOrVedioName}`
                                                                         }
                                                                         download
                                                                       >
@@ -305,17 +306,17 @@ const AdminGroupMedia = () => {
                                                                 gmedia.fileName.split(
                                                                   "."
                                                                 )[1] ===
-                                                                  "docx" ? (
+                                                                "docx" ? (
                                                                 <>
                                                                   <div className="docfile">
                                                                     <i
-                                                                      class="fa fa-file-word-o doc-icon"
+                                                                      className="fa fa-file-word-o doc-icon"
                                                                       aria-hidden="true"
                                                                     ></i>
                                                                     <p>
                                                                       <a
                                                                         href={
-                                                                        `${IMAGE_BASE_URL+gmedia.postImageOrVedioName}`
+                                                                          `${IMAGE_BASE_URL + gmedia.postImageOrVedioName}`
                                                                         }
                                                                         download
                                                                       >
@@ -330,16 +331,16 @@ const AdminGroupMedia = () => {
                                                                 gmedia.fileName.split(
                                                                   "."
                                                                 )[1] ===
-                                                                  "xlsx" ? (
+                                                                "xlsx" ? (
                                                                 <div className="docfile">
                                                                   <i
-                                                                    class="fa fa-file-text doc-icon"
+                                                                    className="fa fa-file-text doc-icon"
                                                                     aria-hidden="true"
                                                                   ></i>
                                                                   <p>
                                                                     <a
                                                                       href={
-                                                                        `${IMAGE_BASE_URL+gmedia.postImageOrVedioName}`
+                                                                        `${IMAGE_BASE_URL + gmedia.postImageOrVedioName}`
                                                                       }
                                                                       download
                                                                     >
@@ -352,13 +353,13 @@ const AdminGroupMedia = () => {
                                                               ) : (
                                                                 <div className="docfile">
                                                                   <i
-                                                                    class="fa fa-file-o doc-icon"
+                                                                    className="fa fa-file-o doc-icon"
                                                                     aria-hidden="true"
                                                                   ></i>
                                                                   <p>
                                                                     <a
                                                                       href={
-                                                                        `${IMAGE_BASE_URL+gmedia.postImageOrVedioName}`
+                                                                        `${IMAGE_BASE_URL + gmedia.postImageOrVedioName}`
                                                                       }
                                                                       download
                                                                     >
@@ -371,13 +372,13 @@ const AdminGroupMedia = () => {
                                                               )}
                                                             </div>
                                                           )
-                                                    )
-                                                  ) : (
-                                                    <div className="no-record-found">
-                                                      <h5> No Record Found</h5>
-                                                    </div>
-                                                  )}
-                                                </div>
+                                                      )
+                                                    ) : (
+                                                      <div className="no-record-found">
+                                                        <h5> No Record Found</h5>
+                                                      </div>
+                                                    )}
+                                                  </div>
                                                 </div>
                                               </div>
                                             </div>

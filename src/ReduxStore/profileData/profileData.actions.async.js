@@ -38,7 +38,6 @@ export const updateProfileDataActionThunk = (values, config) => {
         dispatch(profileDataLoadingAction());
         GroupService.UpdateUserPofile(values,config)
             .then(res => {
-                console.log(res.data?.data);
                 dispatch(updateProfileDataAction(res.data?.data));
                 dispatch(profileDataLoadedAction());
                 NotificationManager.success("Profile Update successfully.");

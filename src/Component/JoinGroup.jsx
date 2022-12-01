@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 // import { Link } from "react-router-dom";
+import validator from "validator";
 import { useLocation, useNavigate } from "react-router";
 import logo from "../Assests/Images/Combo-logo.png";
 import GroupService from "../Services/GroupService";
@@ -17,21 +18,20 @@ const initialValues = {
 };
 
 export const JoinGroup = () => {
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const { search } = location;;
+  const referenceCode = new URLSearchParams(search).get("referenceCode");
+  var decodedString = window.atob(referenceCode).split(","); // Base64 decode the Strin
+  // var encodedString = btoa(string); // Base64 encode the String
+
   const [selectedImage, setSelectedImage] = useState(null);
   const [passwordType, setPasswordType] = useState("password");
-  const search = useLocation().search;
-  const referenceCode = new URLSearchParams(search).get("referenceCode");
-
-
-// var encodedString = btoa(string); // Base64 encode the String
-
-  var decodedString = window.atob(referenceCode).split(","); // Base64 decode the Strin
-
-
   const [profileImage, setProfileImage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [values, setValues] = useState(initialValues);
-  const navigate = useNavigate();
 
   const changeHandlerImage = (event) => {
     let files = event.target.files;
@@ -39,13 +39,10 @@ export const JoinGroup = () => {
     reader.readAsDataURL(files[0]);
 
     reader.onload = (e) => {
-      
-   
       setSelectedImage(event.target.files[0]);
       setProfileImage(event.target.files[0]);
     };
   };
-
 
   const togglePassword = (e) => {
     e.preventDefault()
@@ -72,11 +69,11 @@ export const JoinGroup = () => {
     }
   };
 
-  
+
 
   const validateEmail = async (emailId) => {
     const foundUser = await GroupService.getGroupMembersDetailsByEmailId(
-      emailId,decodedString[2]
+      emailId, decodedString[2]
     );
     if (foundUser.data.hasOwnProperty("groupMembersID")) {
       return false;
@@ -111,6 +108,7 @@ export const JoinGroup = () => {
       6
     )}-${phoneNumber.slice(6, 10)}`;
   };
+
   const AddGroupUserDetails = (e) => {
     const data = {
       ReferenceCode: referenceCode,
@@ -119,20 +117,20 @@ export const JoinGroup = () => {
       LastName: values.lastName,
       Phone: values.phoneNumber,
       Email: values.email,
-      Password:values.password,
+      Password: values.password,
       ProfilePicture: profileImage,
       GroupAccessStatus: "Approved",
-      RoleID : 5,
+      RoleID: 5,
     };
 
     const config = {
       headers: { "content-type": "multipart/form-data" },
     };
-    GroupService.inviteMembersViaLink(data,config)
+    GroupService.inviteMembersViaLink(data, config)
       .then((response) => {
         if (response.data.status === "SUCCESS") {
-            // navigate(`/admin-group-detail?groupID=${response.data.groupID}`);
-            navigate(`/login`)
+          // navigate(`/admin-group-detail?groupID=${response.data.groupID}`);
+          navigate(`/login`)
         }
       })
       .catch((e) => {
@@ -146,8 +144,8 @@ export const JoinGroup = () => {
     //Check user mail aready exist
     let emailAreadyExist = await validateEmail(values.email)
 
-    let passwordRegExp =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$/;
+    let passwordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
+    // /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$/;
 
     if (!values.firstName || values.firstName.trim() === "") {
       setErrorMessage("Please enter first name .");
@@ -165,23 +163,28 @@ export const JoinGroup = () => {
       !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
     ) {
       setErrorMessage("Please enter valis email like(test@gmail.com).");
-    } else if (!emailAreadyExist){
+    } else if (!emailAreadyExist) {
       setErrorMessage("This email is already used.");
     } else if (!values.password) {
       setErrorMessage("Password  is required.");
-    } else if (!passwordRegExp.test(values.password)) {
+    } else if (!validator.isStrongPassword(values?.password, {
+      minLength: 8,
+      minLowercase: 1,
+      minUppercase: 1,
+      minNumbers: 1,
+      minSymbols: 1,
+    })) {
       setErrorMessage(`Min 1 uppercase letter
-                            Min 1 lowercase letter.
+            Min 1 lowercase letter.
             Min 1 special character.
             Min 1 number.
             Min 8 characters.
             Max 30 characters.`);
     } else {
-      setErrorMessage();
+      setErrorMessage("");
       AddGroupUserDetails();
     }
   };
-
 
   return (
     <div>
@@ -202,7 +205,7 @@ export const JoinGroup = () => {
                 <p>Please enter your personal detail below.</p>
               </div>
               <div className="modal-create-group-upld-img mb-3">
-                
+
                 <div className="create-group-upld-img">
                   <label className="JoinGroupImage">
                     {selectedImage && (
@@ -216,12 +219,12 @@ export const JoinGroup = () => {
                         {/* <button onClick={() => setSelectedImage(null)}> Remove</button> */}
                       </div>
                     )}
-
                     <input
                       type="file"
                       name="myImage"
+                      accept="image/*"
                       onChange={(event) => {
-                        
+
                         changeHandlerImage(event);
                       }}
                     />
@@ -230,103 +233,104 @@ export const JoinGroup = () => {
                 <span style={{ color: "red" }}>{errorMessage}</span>
               </div>
               <div className="row">
-           <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-              <div className="mb-3 field-set-form">
-                <label htmlFor="firstName" className="form-label">
-                  First Name
-                </label>
-                <input
-                  type="text"
-                  name="firstName"
-                  id="firstName"
-                  className="form-control cstm-field"
-                  placeholder="Enter First Name"
-                  value={values.firstName}
-                  onChange={handleInputChange}
-                />
+                <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                  <div className="mb-3 field-set-form">
+                    <label htmlFor="firstName" className="form-label">
+                      First Name
+                    </label>
+                    <input
+                      type="text"
+                      name="firstName"
+                      id="firstName"
+                      className="form-control cstm-field"
+                      placeholder="Enter First Name"
+                      value={values.firstName}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+                <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                  <div className="mb-3 field-set-form">
+                    <label htmlFor="lastName" className="form-label">
+                      Last Name
+                    </label>
+                    <input
+                      type="text"
+                      name="lastName"
+                      id="lastName"
+                      className="form-control cstm-field"
+                      placeholder="Enter Last Name"
+                      value={values.lastName}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+                <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                  <div className="mb-3 field-set-form">
+                    <label htmlFor="phoneNumber" className="form-label">
+                      Phone Number
+                    </label>
+                    <input
+                      type="text"
+                      name="phoneNumber"
+                      id="phoneNumber"
+                      className="form-control cstm-field"
+                      placeholder="Enter Phone Number"
+                      value={values.phoneNumber}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+                <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                  <div className="mb-3 field-set-form">
+                    <label htmlFor="email" className="form-label">
+                      Email
+                    </label>
+                    <input
+                      type="text"
+                      name="email"
+                      id="email"
+                      className="form-control cstm-field"
+                      placeholder="Enter Email"
+                      value={values.email}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+                <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                  <div className="form-group mb-3 position-relative password-field">
+                    <label className="form-label">Password</label>
+                    <input
+                      onselectstart={() => false}
+                      onPaste={(e) => {
+                        e.preventDefault()
+                        return false
+                      }}
+                      onCopy={() => false}
+                      onCut={() => false}
+                      onDrag={() => false}
+                      onDrop={() => false}
+                      autoComplete="off"
+                      type={passwordType}
+                      className="form-control cstm-field"
+                      placeholder="Password"
+                      name="password"
+                      value={values.password}
+                      onChange={handleInputChange}
+                    />
+                    <button
+                      className="btn btn-outline-primary hide-show-eye"
+                      onClick={togglePassword}
+                    >
+                      {passwordType === "password" ? (
+                        <i className="fa fa-eye-slash"></i>
+                      ) : (
+                        <i className="fa fa-eye"></i>
+                      )}
+                    </button>
+                  </div>
+                </div>
               </div>
-</div>
-<div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-              <div className="mb-3 field-set-form">
-                <label htmlFor="lastName" className="form-label">
-                  Last Name
-                </label>
-                <input
-                  type="text"
-                  name="lastName"
-                  id="lastName"
-                  className="form-control cstm-field"
-                  placeholder="Enter Last Name"
-                  value={values.lastName}
-                  onChange={handleInputChange}
-                />
-              </div>
-              </div>
-              <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-              <div className="mb-3 field-set-form">
-                <label htmlFor="phoneNumber" className="form-label">
-                  Phone Number
-                </label>
-                <input
-                  type="text"
-                  name="phoneNumber"
-                  id="phoneNumber"
-                  className="form-control cstm-field"
-                  placeholder="Enter Phone Number"
-                  value={values.phoneNumber}
-                  onChange={handleInputChange}
-                />
-              </div>
-              </div>
-              <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-              <div className="mb-3 field-set-form">
-                <label htmlFor="email" className="form-label">
-                  Email
-                </label>
-                <input
-                  type="text"
-                  name="email"
-                  id="email"
-                  className="form-control cstm-field"
-                  placeholder="Enter Email"
-                  value={values.email}
-                  onChange={handleInputChange}
-                />
-              </div>
-              </div>
-              <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-              <div className="form-group mb-3 position-relative password-field">
-                <label className="form-label">Password</label>
-                <input
-                onselectstart ={()=>false}
-                onPaste={(e)=>{
-                  e.preventDefault()
-                  return false}}
-                onCopy={()=>false}
-                onCut={()=>false}
-                onDrag={()=>false}
-                onDrop={()=>false}
-                autoComplete="off"
-                type={passwordType}
-                  className="form-control cstm-field"
-                  placeholder="Password"
-                  name="password"
-                  value={values.password}
-                  onChange={handleInputChange}
-                />
-                 <button
-                  className="btn btn-outline-primary hide-show-eye"
-                  onClick={togglePassword}
-                >
-                  {passwordType === "password" ? (
-                    <i className="fa fa-eye-slash"></i>
-                  ) : (
-                    <i className="fa fa-eye"></i>
-                  )}
-                </button>
-              </div>
-            </div>
-            </div>
               <div className="text-center login-cstm-button ">
                 <input
                   type="button"

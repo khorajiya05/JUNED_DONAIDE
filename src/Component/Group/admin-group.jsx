@@ -56,6 +56,9 @@ const initialValues = {
 };
 
 const AdminGouup = () => {
+
+  const { UserID, RoleID } = useSelector((state) => state.auth?.loginData);
+
   // let subtitle;
   const [modalIsOpen, setIsOpen] = React.useState(false);
   // const userName = localStorage.getItem("userName");
@@ -63,7 +66,7 @@ const AdminGouup = () => {
   const dispatch = useDispatch();
   // const adminGroups = useSelector((state) => state.createGroupReducer);
   const permission = useSelector(
-    (state) => state.roleAndPermision.data.payload
+    (state) => state.roleAndPermision.data
   );
 
   const [isLoading, setIsLoading] = useState(false);
@@ -117,8 +120,8 @@ const AdminGouup = () => {
   const [modelStatus, setModelStatus] = useState(false);
   const [userGroup, setUserGroup] = useState([]);
   const [renderComp, setRenderComp] = useState(0);
-  const userID = localStorage.getItem("userID");
-  let roleID = localStorage.getItem("roleID");
+  // const userID = localStorage.getItem("userID");
+  // let roleID = localStorage.getItem("roleID");
 
   function Activeborder(obj) {
     setActivebor(!Activebor);
@@ -158,7 +161,7 @@ const AdminGouup = () => {
   const UpdateGroupDetails = (e) => {
     const data = {
       GroupID: groupID,
-      UserID: userID,
+      UserID: UserID,
       CommunityID: values.siteID,
       GroupName: values.groupName,
       GroupType: values.groupType,
@@ -186,6 +189,7 @@ const AdminGouup = () => {
         console.log(e);
       });
   };
+
   const GroupFormValidation = async (e) => {
     e.preventDefault();
     if (!values.siteID || values.siteID === "default") {
@@ -195,7 +199,6 @@ const AdminGouup = () => {
     } else {
       setErrorMessage();
       const res = await GroupService.getGroupByGroupID(groupID);
-
       if (res.data.statusCode === 404) {
         AddGroupDetails();
       } else {
@@ -210,7 +213,7 @@ const AdminGouup = () => {
   }, [userCommunity?.communityId, renderComp]);
 
   const getUserCommunityByUserID = async () => {
-    const res = await CommunityService.getUserCommunityByUserID(userID);
+    const res = await CommunityService.getUserCommunityByUserID(UserID);
 
     setUserCommunity(res.data);
     // setCommunityCount(res.data.length);
@@ -221,7 +224,7 @@ const AdminGouup = () => {
     setIsLoaded(true);
 
     const res = await GroupService.getCommunityGroupsWithCommunityDetails(
-      userID
+      UserID
     );
     setUserGroup(res.data);
     setIsLoaded(false);
@@ -232,7 +235,7 @@ const AdminGouup = () => {
 
   const AddGroupDetails = (e) => {
     const data = {
-      UserID: userID,
+      UserID: UserID,
       CommunityID: values.siteID,
       GroupName: values.groupName,
       GroupType: values.groupType,
@@ -262,6 +265,7 @@ const AdminGouup = () => {
   };
 
   let EditGroup = async (groupId) => {
+    // debugger
     const res = await GroupService.getGroupByGroupID(groupId);
 
     const initialValues = {
@@ -308,7 +312,7 @@ const AdminGouup = () => {
         },
         {
           label: "No",
-          onClick: () => {},
+          onClick: () => { },
         },
       ],
     });
@@ -338,7 +342,7 @@ const AdminGouup = () => {
     const data = {
       GroupID: groupID,
       siteID: communityID,
-      whoInvited: userID,
+      whoInvited: UserID,
       status: "Joined",
     };
 
@@ -354,7 +358,7 @@ const AdminGouup = () => {
   };
 
   useEffect(() => {
-    dispatch(getRoleAndPermissionListByID(userID, roleID));
+    dispatch(getRoleAndPermissionListByID(UserID, RoleID));
   }, []);
 
   return (
@@ -378,9 +382,8 @@ const AdminGouup = () => {
                       <i className="fa fa-times" aria-hidden="true"></i>
                     </button>
                   </div>
-
                   <form>
-                    <div className="modal-body-create-grp  ">
+                    <div className="modal-body-create-grp modal-bodycstm1">
                       <div className="modal-body p-0">
                         <div className="modal-create-group-upld-img mb-3">
                           <div className="create-group-upld-img">
@@ -414,6 +417,7 @@ const AdminGouup = () => {
                                 disabled={modelStatus}
                                 type="file"
                                 name="myImage"
+                                accept="image/*"
                                 onChange={(event) => {
                                   changeHandlerImage(event);
                                 }}
@@ -442,7 +446,7 @@ const AdminGouup = () => {
                                         Select Community
                                       </option>
                                       {userCommunity &&
-                                      userCommunity.length > 0 ? (
+                                        userCommunity.length > 0 ? (
                                         userCommunity.map((option) => (
                                           <option
                                             key={option.communityId}
@@ -514,11 +518,11 @@ const AdminGouup = () => {
                             onClick={
                               !modelStatus
                                 ? () => {
-                                    Activeborder({
-                                      isPrivateVal: false,
-                                      isPublicVal: true,
-                                    });
-                                  }
+                                  Activeborder({
+                                    isPrivateVal: false,
+                                    isPublicVal: true,
+                                  });
+                                }
                                 : ""
                             }
                             className={
@@ -548,11 +552,11 @@ const AdminGouup = () => {
                             onClick={
                               !modelStatus
                                 ? () => {
-                                    Activeborder2({
-                                      isPrivateVal: true,
-                                      isPublicVal: false,
-                                    });
-                                  }
+                                  Activeborder2({
+                                    isPrivateVal: true,
+                                    isPublicVal: false,
+                                  });
+                                }
                                 : ""
                             }
                             className={
@@ -616,7 +620,7 @@ const AdminGouup = () => {
                     <div className="admin-group-page">
                       <div className="adm-group-heading">
                         <h3>
-                          {roleID != 1 && (
+                          {Number(RoleID) !== Number(1) && (
                             <Link to="/admin-tools">
                               <i
                                 className="fa fa-long-arrow-left me-2"
@@ -627,7 +631,7 @@ const AdminGouup = () => {
                           Groups
                         </h3>
                         <div className="button-UI">
-                          {roleID == 5 ? (
+                          {RoleID == 5 ? (
                             ""
                           ) : (
                             <>
@@ -648,7 +652,7 @@ const AdminGouup = () => {
                                     Create
                                   </Link>
                                 )}
-                             
+
                               <Link
                                 to="/group-setting"
                                 className="btn tmplt-btn Btn-fill"
@@ -660,12 +664,12 @@ const AdminGouup = () => {
                         </div>
                       </div>
                       {userGroup !== [] && userGroup.length > 0 ? (
-                        userGroup.map((option) => (
-                          <div className="group-main-container">
+                        userGroup.map((option, index) => (
+                          <div className="group-main-container" key={index}>
                             <div className="adm-group-slider" key={option}>
                               <div className="adm-group-slider-heading">
                                 <h3>{option.communityName}</h3>
-                                {roleID == 5 ? (
+                                {RoleID == 5 ? (
                                   ""
                                 ) : (
                                   <Link
@@ -684,102 +688,101 @@ const AdminGouup = () => {
                                   responsive={state.responsive}
                                 >
                                   {option.groupList.length > 0
-                                    ? option.groupList.map((userOption) => (
-                                        <div className={"item "}>
-                                          <img
-                                            key={userOption}
-                                            src={
+                                    ? option.groupList.map((userOption, index) => (
+                                      <div className={"item "} key={index}>
+                                        <img
+                                          key={userOption}
+                                          src={
+                                            userOption.coverImage
+                                              ? `${IMAGE_BASE_URL +
                                               userOption.coverImage
-                                                ? `${
-                                                    IMAGE_BASE_URL +
-                                                    userOption.coverImage
-                                                  }`
-                                                : process.env.PUBLIC_URL +
-                                                  "/Images/Untitled.png"
-                                            }
-                                            alt=""
-                                          />
-                                          {userOption.joinedStatus ===
+                                              }`
+                                              : process.env.PUBLIC_URL +
+                                              "/Images/Untitled.png"
+                                          }
+                                          alt=""
+                                        />
+                                        {userOption.joinedStatus ===
                                           "Active" ? (
-                                            <div className="group-type">
-                                              <p>{userOption.groupName}</p>
+                                          <div className="group-type">
+                                            <p>{userOption.groupName}</p>
+                                            <button
+                                              className="text-decoration-none post"
+                                              onClick={() =>
+                                                joinGroup(
+                                                  userOption.communityID,
+                                                  userOption.groupID
+                                                )
+                                              }
+                                            >
+                                              Join
+                                            </button>
+                                          </div>
+                                        ) : (
+                                          <>
+                                            <div className=" adm-group-slider-edit_view groupActionRow">
+                                              {permission &&
+                                                permission.length > 0 &&
+                                                permission.filter(
+                                                  (e) =>
+                                                    e.permissionName ===
+                                                    "Edit Group "
+                                                ).length > 0 && (
+                                                  <button
+                                                    type="button"
+                                                    onClick={() =>
+                                                      EditGroup(
+                                                        userOption.groupID
+                                                      )
+                                                    }
+                                                  >
+                                                    <i className="fa fa-pencil"></i>
+
+                                                  </button>
+                                                )}
+
+                                              {permission &&
+                                                permission.length > 0 &&
+                                                permission.filter(
+                                                  (e) =>
+                                                    e.permissionName ===
+                                                    "Delete Group"
+                                                ).length > 0 && (
+                                                  <button
+                                                    type="button"
+                                                    onClick={() =>
+                                                      DeleteGroupModal(
+                                                        userOption.groupID
+                                                      )
+                                                    }
+                                                  >
+                                                    <i className="fa fa-trash"></i>
+                                                  </button>
+                                                )}
+
                                               <button
-                                                className="text-decoration-none post"
+                                                type="button"
                                                 onClick={() =>
-                                                  joinGroup(
-                                                    userOption.communityID,
-                                                    userOption.groupID
+                                                  ViewGroupModal(
+                                                    userOption.groupID,
+                                                    true
                                                   )
                                                 }
                                               >
-                                                Join
+                                                <i className="fa fa-eye"></i>
                                               </button>
                                             </div>
-                                          ) : (
-                                            <>
-                                              <div className=" adm-group-slider-edit_view groupActionRow">
-                                                {permission &&
-                                                  permission.length > 0 &&
-                                                  permission.filter(
-                                                    (e) =>
-                                                      e.permissionName ===
-                                                      "Edit Group"
-                                                  ).length > 0 && (
-                                                    <button
-                                                      type="button"
-                                                      onClick={() =>
-                                                        EditGroup(
-                                                          userOption.groupID
-                                                        )
-                                                      }
-                                                    >
-                                                      <i className="fa fa-pencil"></i>
-                                                   
-                                                    </button>
-                                                  )}
-
-                                                {permission &&
-                                                  permission.length > 0 &&
-                                                  permission.filter(
-                                                    (e) =>
-                                                      e.permissionName ===
-                                                      "Delete Group"
-                                                  ).length > 0 && (
-                                                    <button
-                                                      type="button"
-                                                      onClick={() =>
-                                                        DeleteGroupModal(
-                                                          userOption.groupID
-                                                        )
-                                                      }
-                                                    >
-                                                      <i className="fa fa-trash"></i>
-                                                    </button>
-                                                  )}
-
-                                                <button
-                                                  type="button"
-                                                  onClick={() =>
-                                                    ViewGroupModal(
-                                                      userOption.groupID,
-                                                      true
-                                                    )
-                                                  }
-                                                >
-                                                  <i className="fa fa-eye"></i>
-                                                </button>
+                                            <Link
+                                              to={`/admin-group-detail?groupID=${userOption.groupID}`}
+                                            >
+                                              <div className="group-type">
+                                                <p>{userOption.groupName}</p>
                                               </div>
-                                              <Link
-                                                to={`/admin-group-detail?groupID=${userOption.groupID}`}
-                                              >
-                                                <div className="group-type">
-                                                  <p>{userOption.groupName}</p>
-                                                </div>
-                                              </Link>
-                                            </>
-                                          )}
-                                        </div>
-                                      ))
+                                            </Link>
+                                          </>
+                                        )}
+                                      </div>
+                                    ))
                                     : ""}
                                 </OwlCarousel>
                               </div>

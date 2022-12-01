@@ -10,7 +10,13 @@ import { IMAGE_BASE_URL } from "../Config";
 import UpdateUserProfile from "./UpdateUserProfile";
 import ChangeRoleModal from "./Admin/ChangeRoleModal";
 import { logout } from "../ReduxStore/auth/auth.action";
+import { doEmptyProfileAction } from "../ReduxStore/profileData/profileData.actions";
+import { getProfileDataActionThunk } from "../ReduxStore/profileData/profileData.actions.async";
+
 export const AdminHeader = (props) => {
+
+  let dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { profileData } = useSelector((state) => state?.profileData)
   const { IsMaster, UserID, RoleID } = useSelector((state) => state?.auth?.loginData)
@@ -34,17 +40,13 @@ export const AdminHeader = (props) => {
   const closeRoleModal = () => {
     setShowRoleMmodal(false);
   };
-  let dispatch = useDispatch();
 
-  const permission = useSelector(
-    (state) => state.roleAndPermision.data.payload
-  );
+  const permission = useSelector((state) => state.roleAndPermision.data);
 
   const handleToggle = () => {
     setToggleNav(!toggleNav);
   };
 
-  const navigate = useNavigate();
 
   let getAllNotificationMessageByUserID = async (userID) => {
     try {
@@ -59,9 +61,10 @@ export const AdminHeader = (props) => {
     }
   };
 
-    
+
   const logoutHandler = () => {
     dispatch(logout());
+    dispatch(doEmptyProfileAction());
     navigate("/");
     localStorage.removeItem("token");
   };
@@ -69,15 +72,24 @@ export const AdminHeader = (props) => {
 
   const handleNotification = async () => {
     await GroupService.UpdateUserNotificationIsView(UserID);
-
     navigate("/notification");
   };
 
   useEffect(() => {
     getAllNotificationMessageByUserID(UserID);
     dispatch(getRoleAndPermissionListByID(UserID, RoleID));
-  }, []);
+  }, [RoleID, UserID, dispatch]);
 
+  useEffect(() => {
+    if (profileData === null) {
+      dispatch(getProfileDataActionThunk(UserID))
+    }
+    else if (Number(profileData.roleID) !== Number(RoleID) || String(profileData.profileId) !== String(UserID)) {
+      navigate("/");
+    } else {
+      return
+    }
+  }, [RoleID, UserID, dispatch, navigate, profileData])
 
 
   return (
@@ -109,7 +121,7 @@ export const AdminHeader = (props) => {
           <img src={logo} width={140} alt="logo" />
         </Link>
         <button className="button-toogle" onClick={handleToggle}>
-          <i class="fa fa-bars" aria-hidden="true"></i>
+          <i className="fa fa-bars" aria-hidden="true"></i>
         </button>
 
         <ul className="navbar-nav adm-header-nav ms-auto ">
@@ -119,7 +131,7 @@ export const AdminHeader = (props) => {
           >
             <a
               className="nav-link dropdown-toggle"
-              href="#"
+              href="/#"
               role="button"
               data-bs-toggle="dropdown"
             >
@@ -132,10 +144,10 @@ export const AdminHeader = (props) => {
           </li>
           {/* )} */}
 
-          <li class="nav-item dropdown adm-profile-drop">
+          <li className="nav-item dropdown adm-profile-drop">
             <a
               className="nav-link dropdown-toggle"
-              href="#"
+              href="/#"
               role="button"
               data-bs-toggle="dropdown"
             >
@@ -145,28 +157,28 @@ export const AdminHeader = (props) => {
                   alt=""
                 />
               </div>
-              <div className="admin-profile-pic-name">{`${profileData?.firstName} ${profileData?.lastName}`}</div>
+              <div className="admin-profile-pic-name">{profileData?.firstName}</div>
             </a>
-            <ul class="dropdown-menu">
+            <ul className="dropdown-menu">
               <li onClick={openModal}>
-                <Link class="dropdown-item" to="">
-                  <i class="fa fa-edit me-1" aria-hidden="true"></i> Edit
+                <Link className="dropdown-item" to="">
+                  <i className="fa fa-edit me-1" aria-hidden="true"></i> Edit
                   Profile
                 </Link>
               </li>
 
-              {IsMaster == "True" && (
+              {IsMaster === "True" && (
                 <li onClick={openRoleModal}>
-                  <Link class="dropdown-item" to="">
-                    <i class="fa fa-cog me-2" aria-hidden="true"></i> Switch
+                  <Link className="dropdown-item" to="">
+                    <i className="fa fa-cog me-2" aria-hidden="true"></i> Switch
                     Role
                   </Link>
                 </li>
               )}
 
               <li onClick={logoutHandler}>
-                <a class="dropdown-item" href="/">
-                  <i class="fa fa-power-off me-2" aria-hidden="true"></i> Logout
+                <a className="dropdown-item" href="/">
+                  <i className="fa fa-power-off me-2" aria-hidden="true"></i> Logout
                 </a>
               </li>
             </ul>

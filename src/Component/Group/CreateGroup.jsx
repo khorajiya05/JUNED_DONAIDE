@@ -1,4 +1,3 @@
-import React from "react";
 import Modal from "react-modal";
 const CreateGroup = (props) => {
   const {
@@ -16,11 +15,13 @@ const CreateGroup = (props) => {
     isLoading,
     errorMessage,
     Activeborder,
-    Activebor,Activeborder2,Activebor2,GroupFormValidation
+    Activebor,
+    Activeborder2,
+    Activebor2,
+    GroupFormValidation
   } = props;
   return (
     <div>
-  
       <Modal
         isOpen={modalIsOpen}
         onAfterOpen={afterOpenModal}
@@ -34,7 +35,6 @@ const CreateGroup = (props) => {
             <i className="fa fa-times" aria-hidden="true"></i>
           </button>
         </div>
-
         <form>
           <div className="modal-body-create-grp">
             <div className="modal-body p-0">
@@ -50,7 +50,6 @@ const CreateGroup = (props) => {
                             width={"100%"}
                             src={editCoverImage}
                           />
-                        
                         </div>
                       ) : selectedImage != null ? (
                         <div className="">
@@ -58,18 +57,17 @@ const CreateGroup = (props) => {
                             alt="not fount"
                             width={"100%"}
                             src={URL.createObjectURL(selectedImage)}
-                          />
-                          
+                          /> 
                         </div>
                       ) : (
                         ""
                       )
                     }
-
                     <input
                       disabled={modelStatus}
                       type="file"
                       name="myImage"
+                      accept="image/*"
                       onChange={(event) => {
                         changeHandlerImage(event);
                       }}
@@ -77,7 +75,6 @@ const CreateGroup = (props) => {
                   </label>
                 </div>
               </div>
-
               <div className="modal-create-group-name">
                 <div className="form-group field-set-form mb-3">
                   <div className="cstm-field-dropdown mb-3">
@@ -116,7 +113,6 @@ const CreateGroup = (props) => {
                       </select>
                     </div>
                   </div>
-
                   <div className="form-group mb-3">
                     <label className="form-label">Group Name</label>
                     <input
@@ -129,7 +125,6 @@ const CreateGroup = (props) => {
                       onChange={handleInputChange}
                     />
                   </div>
-
                   <div className="form-group mb-3">
                     <label className="form-label">Description</label>
                     <textarea
@@ -144,11 +139,9 @@ const CreateGroup = (props) => {
                 </div>
                 <span style={{ color: "red" }}>{errorMessage}</span>
               </div>
-
               <div className="modal-create-group-privacy">
                 <h5>Privacy</h5>
                 <p>Who can view this group's content?</p>
-
                 <div
                   onClick={!modelStatus ? Activeborder : ""}
                   className={
@@ -167,7 +160,6 @@ const CreateGroup = (props) => {
                     </div>
                   </div>
                 </div>
-
                 <div
                   onClick={!modelStatus ? Activeborder2 : ""}
                   className={
@@ -187,7 +179,6 @@ const CreateGroup = (props) => {
                   </div>
                 </div>
               </div>
-
               <div></div>
             </div>
           </div>
@@ -210,7 +201,6 @@ const CreateGroup = (props) => {
             </div>
           ) : null}
         </form>
-    
       </Modal>
     </div>
   );

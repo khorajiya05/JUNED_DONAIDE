@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
 import { useFormik } from "formik";
-import SiteService from "../Services/CommunityService";
-
-import {
-  NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
+import validator from "validator";
+import { NotificationContainer, NotificationManager } from "react-notifications";
 import "react-notifications/lib/notifications.css";
+import { useSelector } from "react-redux";
+
+import SiteService from "../Services/CommunityService";
 
 const customStyles = {
   content: {
@@ -22,15 +21,19 @@ const customStyles = {
     color: "red",
   },
 };
+
 const CreateCommunityAdmin = (porps) => {
+
+  const { UserID, RoleID } = useSelector((state) => state.auth?.loginData);
+
   const { showModal, closeModal, setShowMmodal, userCommunity, roleID } = porps;
 
   const [coverImage, setCoverImage] = useState(null);
-
   const [erroeMessage, setErrorMessage] = useState([]);
   // const [values, setValues] = useState(initialValues);
   const [isLoading, setIsLoading] = useState(false);
   const [passwordType, setPasswordType] = useState("password");
+
   const togglePassword = (e) => {
     e.preventDefault();
     if (passwordType === "password") {
@@ -65,14 +68,10 @@ const CreateCommunityAdmin = (porps) => {
     const phoneNumber = value.replace(/[^\d]/g, "");
     const phoneNumberLength = phoneNumber.length;
     if (phoneNumberLength < 4) return phoneNumber;
-
     if (phoneNumberLength < 7) {
       return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
     }
-    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(
-      3,
-      6
-    )}-${phoneNumber.slice(6, 10)}`;
+    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
   };
 
   const formik = useFormik({
@@ -98,11 +97,11 @@ const CreateCommunityAdmin = (porps) => {
       values.roleID = roleid;
       values.roleID = roleid;
       values.password = values.password;
-      values.createdBy = localStorage.getItem("userID");
-      values.adminID = localStorage.getItem("userID");
+      values.createdBy = UserID;
+      values.adminID = UserID;
       values.address = "";
       values.dob = "";
-      values.isMasterAdmin=isMasterAdmin
+      values.isMasterAdmin = isMasterAdmin
 
       const config = {
         headers: { "content-type": "multipart/form-data" },
@@ -143,12 +142,18 @@ const CreateCommunityAdmin = (porps) => {
 
       if (!values.phone) {
         errors.phone = "Phone number is required.";
-      } else if (!phoneRegExp.test(values.phone)) {
+      } else if (values.phone?.length <14) {
         errors.phone = "Phone number is not valid.";
       }
       if (!values.password) {
         errors.password = "Password  is required.";
-      } else if (!passwordRegExp.test(values.password)) {
+      } else if (!validator.isStrongPassword(values?.password, {
+        minLength: 8,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1,
+      })) {
         errors.password = `Min 1 uppercase letter
                         Min 1 lowercase letter.
         Min 1 special character.
@@ -256,7 +261,7 @@ const CreateCommunityAdmin = (porps) => {
                                 )}
                               </select>
                               {formik.touched.communityID &&
-                              formik.errors.communityID ? (
+                                formik.errors.communityID ? (
                                 <div style={customStyles.errorStyle}>
                                   {formik.errors.communityID}
                                 </div>
@@ -278,7 +283,7 @@ const CreateCommunityAdmin = (porps) => {
                               onBlur={formik.handleBlur}
                             />
                             {formik.touched.firstName &&
-                            formik.errors.firstName ? (
+                              formik.errors.firstName ? (
                               <div style={customStyles.errorStyle}>
                                 {formik.errors.firstName}
                               </div>
@@ -298,7 +303,7 @@ const CreateCommunityAdmin = (porps) => {
                               onBlur={formik.handleBlur}
                             />
                             {formik.touched.lastName &&
-                            formik.errors.lastName ? (
+                              formik.errors.lastName ? (
                               <div style={customStyles.errorStyle}>
                                 {formik.errors.lastName}
                               </div>
@@ -351,12 +356,12 @@ const CreateCommunityAdmin = (porps) => {
                           <div className="form-group mb-3 position-relative password-field">
                             <label className="form-label">Password</label>
                             <input
-                              onselectstart={()=>false}
+                              onselectstart={() => false}
                               onpaste="return false;"
-                              onCopy={()=>false}
-                              onCut={()=>false}
-                              onDrag={()=>false}
-                              onDrop={()=>false}
+                              onCopy={() => false}
+                              onCut={() => false}
+                              onDrag={() => false}
+                              onDrop={() => false}
                               autoComplete="off"
                               type={passwordType}
                               className="form-control cstm-field"
@@ -377,7 +382,7 @@ const CreateCommunityAdmin = (porps) => {
                               )}
                             </button>
                             {formik.touched.password &&
-                            formik.errors.password ? (
+                              formik.errors.password ? (
                               <div style={customStyles.errorStyle}>
                                 {formik.errors.password}
                               </div>
@@ -398,8 +403,8 @@ const CreateCommunityAdmin = (porps) => {
                   Cancel
                 </button>
                 <button type="submit" className="save-button">
-                
-                  {roleID !=1 ?"Create Community Admin":"Create Master Admin"} 
+
+                  {roleID != 1 ? "Create Community Admin" : "Create Master Admin"}
                 </button>
               </div>
             </form>
